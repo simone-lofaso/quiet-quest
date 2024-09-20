@@ -1,10 +1,9 @@
 import React from 'react';
 import { View, Text, Image, StyleSheet, TouchableOpacity } from 'react-native';
 
-export default function StartPage() {
+export default function StartPage({ navigation }) {
     return (
       <View style={styles.container}>
-        {/* Title */}
         <View style={styles.logoContainer}>
           <Text style={styles.logoText}>Quiet Quest</Text>
         </View>
@@ -18,11 +17,11 @@ export default function StartPage() {
   
         {/* Buttons */}
         <View style={styles.buttonContainer}>
-            <TouchableOpacity style={styles.button}>
+            <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('SignupPage')}>
                 <Text style={styles.buttonText}>Signup</Text>
             </TouchableOpacity>
 
-            <TouchableOpacity style={styles.button}>
+            <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('LoginPage')}>
                 <Text style={styles.buttonText}>Login</Text>
             </TouchableOpacity>
         </View>
@@ -62,7 +61,7 @@ export default function StartPage() {
 
     button: {
       backgroundColor: '#CEE6F3',
-      paddingVertical: 20,
+      padding: 20,
       borderRadius: 10,
       marginBottom: 30,
       alignItems: 'center',
