@@ -27,6 +27,10 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import Profile from './src/pages/Profile.js';
+import Interest from './src/pages/Interest.js';
+import TravelComfortScreen from './src/pages/TravelComfortScreen.js';
+import MoodCrowdedPlace from "./src/pages/MoodCrowdedPlace.js";
+import MoodQuietPlace from "./src/pages/MoodQuietPlace.js";
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -38,6 +42,22 @@ function HomeScreen({ navigation }) {
       <Button
         title="Go to Profile"
         onPress={() => navigation.navigate('Profile')}
+      />
+      <Button
+        title="Go to Interests"
+        onPress={() => navigation.navigate('Interest')} 
+      />
+      <Button 
+        title="Go to Travel Comfort"
+        onPress={() => navigation.navigate('TravelComfortScreen')}
+      />
+      <Button
+        title="Go to Mood Selection"
+        onPress={() => navigation.navigate('MoodCrowdedPlace')}
+      />
+      <Button 
+        title="Go to Mood in Quiet Place"
+        onPress={() => navigation.navigate('MoodQuietPlace')}
       />
       <StatusBar style="auto" />
     </View>
@@ -51,14 +71,38 @@ export default function App() {
       <Stack.Navigator initialRouteName="Home">
         <Stack.Screen name="Home" component={HomeScreen} 
         options={{
-          headerStyle: { backgroundColor: '#FAEBCD' }, // Change this to your desired color
-          headerTintColor: '#6C3428', // Change this to your desired color for the back arrow and title
+          headerStyle: { backgroundColor: '#FAEBCD' }, 
+          headerTintColor: '#6C3428', 
         }} />
         <Stack.Screen name="Profile" component={Profile} 
         options={{
-          headerStyle: { backgroundColor: '#FAEBCD' }, // Change this to your desired color
-          headerTintColor: '#6C3428', // Change this to your desired color for the back arrow and title
+          headerStyle: { backgroundColor: '#FAEBCD' }, 
+          headerTintColor: '#6C3428', 
         }} 
+        />
+        <Stack.Screen name="Interest" component={Interest}
+        options={{
+          headerStyle: { backgroundColor: '#FAEBCD' }, 
+          headerTintColor: '#6C3428', 
+        }} 
+        />
+        <Stack.Screen name="TravelComfortScreen" component={TravelComfortScreen}
+        options={{
+          headerStyle: { backgroundColor: '#FAEBCD' }, 
+          headerTintColor: '#6C3428', 
+        }}
+        />
+        <Stack.Screen name="MoodCrowdedPlace" component={MoodCrowdedPlace}
+        options={{
+          headerStyle: { backgroundColor: '#FAEBCD' }, 
+          headerTintColor: '#6C3428', 
+        }}
+        />
+        <Stack.Screen name="MoodQuietPlace" component={MoodQuietPlace}
+        options={{
+          headerStyle: { backgroundColor: '#FAEBCD' }, 
+          headerTintColor: '#6C3428', 
+        }}
         />
       </Stack.Navigator>
     </NavigationContainer>
