@@ -3,10 +3,12 @@ import { Alert, TouchableOpacity } from "react-native";
 import { View, StyleSheet, TextInput, Text, Image } from "react-native";
 import { auth } from "../config/firebase";
 import { signInWithEmailAndPassword } from "firebase/auth";
+import { Ionicons } from "@expo/vector-icons";
 
 export default function LoginPage({ navigation }) {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
+    const [isPasswordVisible, setIsPasswordVisible] = useState(false);
 
     const handleLogin = () => {
         signInWithEmailAndPassword(auth, email, password)
@@ -16,10 +18,20 @@ export default function LoginPage({ navigation }) {
                 navigation.navigate('HomePage');
             })
             .catch((error) => {
-                const errorCode = error.code;
-                const errorMessage = error.message;
-
-                Alert.alert("Login Failed");  
+                console.log('Error Code:', error.code);  
+                if(error.code === 'auth/invalid-email') {
+                    Alert.alert("Login Error", "Please enter email address!");
+                } else if (error.code === 'auth/missing-password') {
+                    Alert.alert("Login Error", "Please enter your password!");
+                } else if(error.code === 'auth/user-not-found') {
+                    Alert.alert("Login Error", "Invalid email address!");
+                } else if (error.code === 'auth/wrong-password') {
+                    Alert.alert("Login Error", "Incorrect password!");
+                } else if (error.code === 'auth/too-many-requests') {
+                    Alert.alert("Login Error", "Too many attempts. Please try again later!");
+                } else {
+                    Alert.alert("Login Failed!", error.message);  
+                }
             });
     };
 
@@ -47,13 +59,24 @@ export default function LoginPage({ navigation }) {
                     onChangeText={setEmail}
                 />
 
-                <TextInput
-                    style={styles.input}
-                    placeholder="Password"
-                    secureTextEntry
-                    value={password}
-                    onChangeText={setPassword}
-                />
+                {/* Password Input with Visible Icon*/}
+                <View style={styles.passwordContainer}>
+                    <TextInput
+                        style={styles.passwordInput}
+                        placeholder="Password"
+                        secureTextEntry={!isPasswordVisible}
+                        value={password}
+                        onChangeText={setPassword}
+                    />
+
+                    <TouchableOpacity onPress={() => setIsPasswordVisible(!isPasswordVisible)}>
+                        <Ionicons 
+                            name={isPasswordVisible ? 'eye' : 'eye-off'} 
+                            size={24}
+                            color="gray"
+                        />
+                    </TouchableOpacity>
+                </View>
 
                 <TouchableOpacity style={styles.loginButton} onPress={handleLogin}>
                     <Text style={styles.loginButtonText}>Login</Text>
@@ -126,6 +149,23 @@ const styles = StyleSheet.create({
         marginBottom: 20,
         fontSize: 16,
         color: '#6C3428', 
+    },
+
+    passwordContainer: {
+        flexDirection: "row",
+        alignItems: 'center',
+        backgroundColor: "#FDF0D1",
+        padding: 20,
+        borderRadius: 15,
+        marginBottom: 20,
+        fontSize: 16,
+        color: '#6C3428',
+    },
+
+    passwordInput: {
+        flex: 1,
+        fontSize: 16,
+        color: '#6C3428',
     },
 
     loginButton: {

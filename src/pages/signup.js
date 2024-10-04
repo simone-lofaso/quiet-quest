@@ -11,12 +11,15 @@ import {
   Alert,
 } from "react-native";
 import { auth } from "../config/firebase";
+import { Ionicons } from "@expo/vector-icons";
 
 export default function SignupPage({ navigation }) {
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [isPasswordVisible, setIsPasswordVisible] = useState(false);
   const [confirmPassword, setConfirmPassword] = useState("");
+  const [isConfirmPasswordVisible, setIsConfirmPasswordVisible] = useState(false);
 
   const handleSignup = () => {
     if (!username || !email || !password || !confirmPassword) {
@@ -37,9 +40,11 @@ export default function SignupPage({ navigation }) {
       navigation.navigate('LoginPage');
     })
     .catch((error) => {
-      const errorCode = error.code;
-      const errorMessage = error.message;
-      Alert.alert("Signup Error!", errorMessage);
+      if(error.code === 'auth/email-already-in-use') {
+        Alert.alert("Login Error", "Email already exists!");
+      } else {
+        Alert.alert("Signup Error!", error.message);
+      }
     });
   };
 
@@ -72,21 +77,43 @@ export default function SignupPage({ navigation }) {
           onChangeText={setEmail}
         />
 
-        <TextInput
-          style={styles.input}
-          placeholder="Password"
-          secureTextEntry
-          value={password}
-          onChangeText={setPassword}
-        />
+        {/* Password Input with Visible Icon*/}
+        <View style={styles.passwordContainer}>
+          <TextInput
+            style={styles.passwordInput}
+            placeholder="Password"
+            secureTextEntry={!isPasswordVisible}
+            value={password}
+            onChangeText={setPassword}
+           />
 
-        <TextInput
-          style={styles.input}
-          placeholder="Confirm Password"
-          secureTextEntry
-          value={confirmPassword}
-          onChangeText={setConfirmPassword}
-        />
+          <TouchableOpacity onPress={() => setIsPasswordVisible(!isPasswordVisible)}>
+            <Ionicons 
+              name={isPasswordVisible ? 'eye' : 'eye-off'} 
+              size={24}
+              color="gray"
+             />
+          </TouchableOpacity>
+        </View>
+
+        {/* Confirm Password Input with Visible Icon*/}
+        <View style={styles.passwordContainer}>
+          <TextInput
+            style={styles.passwordInput}
+            placeholder="Confirm Password"
+            secureTextEntry={!isConfirmPasswordVisible}
+            value={confirmPassword}
+            onChangeText={setConfirmPassword}
+           />
+
+          <TouchableOpacity onPress={() => setIsConfirmPasswordVisible(!isConfirmPasswordVisible)}>
+            <Ionicons 
+              name={isConfirmPasswordVisible ? 'eye' : 'eye-off'} 
+              size={24}
+              color="gray"
+             />
+          </TouchableOpacity>
+        </View>
 
         <TouchableOpacity style={styles.signupButton} onPress={handleSignup}>
           <Text style={styles.signupButtonText}>Signup</Text>
@@ -172,6 +199,23 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontWeight: 'bold',
     fontFamily: 'SF Pro Text',
+  },
+
+  passwordContainer: {
+    flexDirection: "row",
+    alignItems: 'center',
+    backgroundColor: "#FDF0D1",
+    padding: 20,
+    borderRadius: 15,
+    marginBottom: 20,
+    fontSize: 16,
+    color: '#6C3428',
+  },
+
+  passwordInput: {
+    flex: 1,
+    fontSize: 16,
+    color: '#6C3428',
   },
 
   loginText: {
