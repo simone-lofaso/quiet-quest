@@ -2,7 +2,7 @@ import React, {useState} from "react";
 import { Alert, TouchableOpacity } from "react-native";
 import { View, StyleSheet, TextInput, Text, Image } from "react-native";
 import { auth } from "../config/firebase";
-import { signInWithEmailAndPassword } from "firebase/auth";
+import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
 
 export default function LoginPage({ navigation }) {
     const [email, setEmail] = useState("");
@@ -23,6 +23,17 @@ export default function LoginPage({ navigation }) {
             });
     };
 
+    const handlePasswordReset = () => {
+        sendPasswordResetEmail(auth, email)
+            .then(() => {
+                Alert.alert('Password reset email sent!', `If there is an account associated with ${email}, a password reset email was sent to the inbox`);
+                //password resent sent, need to find out how to reset password or if firebass handles it
+            })
+            .catch((error) => {
+                const errorCode = error.code;
+                const errorMessage  = error.message;
+            })
+    }
     return (
         <View style={styles.container}> 
             <View style={styles.logoContainer}>
