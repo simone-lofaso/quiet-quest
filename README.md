@@ -36,3 +36,20 @@ npx expo start
 
 7. In terminal once expo is running type "w" so it opens in the web browser.
 
+## Setting up Maps:
+
+```
+npx expo install react-native-maps 
+```
+
+```
+npx expo install expo-location
+```
+
+```
+npm i @react-native-firebase/firestore
+```
+
+```
+npm install react-native-elements
+```
