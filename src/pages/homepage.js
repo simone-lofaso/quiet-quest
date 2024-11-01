@@ -10,7 +10,10 @@ export default function HomePage({ navigation }) {
       .then(() => {
         Alert.alert("Logged Out", "You have been logged out.");
         // Navigate the user back to the login page
-        navigation.navigate('LoginPage');
+        navigation.reset({
+          index: 0,
+          routes: [{ name: 'LoginPage' }],
+        });
       })
       .catch((error) => {
         const errorMessage = error.message;
