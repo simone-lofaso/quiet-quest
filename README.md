@@ -36,3 +36,33 @@ npx expo start
 
 7. In terminal once expo is running type "w" so it opens in the web browser.
 
+## How to Merge:
+
+1. Switch to Main Branch
+```
+git checkout main
+```
+
+2. Update Main
+- May need to do npm install
+```
+git fetch origin
+git pull origin main
+```
+
+3. Merge the Branch you want into Main
+- Replace '<branch-name>' with the branch you want to merge
+```
+git merge <branch-name>
+```
+
+4. Push to main
+```
+git add .
+git commit -m "add comment"
+git push
+```
+
+5. Ensure all team members have pulled the most recent code in main, or else it can result in errors.
+
+6. Create new branch you want to work on with the new updated main.
