@@ -14,8 +14,19 @@ export default function LoginPage({ navigation }) {
         signInWithEmailAndPassword(auth, email, password)
             .then((userCredential) => {
                 const user = userCredential.user;
-                Alert.alert("Successfully Login!", `Welcome back, ${user.email}`);
-                navigation.navigate('HomePage');
+                // Alert.alert("Successfully Login!", `Welcome back, ${user.email}`);
+                // navigation.navigate('HomePage');
+
+                // Check if email is verified
+                if (user.emailVerified) {
+                    Alert.alert("Successfully Login!");
+                    navigation.navigate("HomePage");
+                } else {
+                Alert.alert(
+                    "Email Verification Required",
+                    "Please verify your email before logging in."
+                );
+                }
             })
             .catch((error) => {
                 console.log('Error Code:', error.code);  

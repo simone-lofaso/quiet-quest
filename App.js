@@ -12,6 +12,7 @@ import ProfilePage from "./src/pages/profile";
 import SearchPage from "./src/pages/search";
 import BookmarkPage from "./src/pages/bookmark";
 import MapPage from "./src/pages/map";
+import VerificationEmailPage from "./src/pages/verification";
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -62,6 +63,7 @@ export default function App() {
         <Stack.Screen name="SignupPage" component={SignupPage} />
         <Stack.Screen name="LoginPage" component={LoginPage} />
         <Stack.Screen name="HomePage" component={HomeTabs} />
+        <Stack.Screen name="VerificationEmailPage" component={VerificationEmailPage} />
       </Stack.Navigator>
     </NavigationContainer>
   );
