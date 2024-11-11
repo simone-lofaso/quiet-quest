@@ -17,6 +17,13 @@ export default function InterestsScreen() {
     { name: 'Snowboarding', icon: 'snowboard' }
   ];
 
+  const updateInterests = async() => {
+    await FirebaseFirestore.instance.collection('users')
+    .doc(AuthService().currentUser?.uid)
+    .collection('interests')
+    .add(selectedInterests)
+  }
+
   const toggleInterest = (interest) => {
     if (selectedInterests.includes(interest)) {
       setSelectedInterests(selectedInterests.filter(i => i !== interest));
