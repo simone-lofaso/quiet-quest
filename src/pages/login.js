@@ -52,12 +52,14 @@ export default function LoginPage({ navigation }) {
                 <Text style={styles.logoText}>Quiet Quest</Text>
             </View>
 
-            {/* Logo Image */}
-            <Image 
-            source={require('../../assets/logo.png')} 
-            style={styles.logo}
-            resizeMode="contain"
-            />
+            {/* Clickable Logo Image */}
+            <TouchableOpacity onPress={() => navigation.navigate('StartPage')}>
+                <Image 
+                source={require('../../assets/logo.png')} 
+                style={styles.logo}
+                resizeMode="contain"
+                />
+            </TouchableOpacity>
 
             {/* Form Section */}
             <View style={styles.formContainer}>

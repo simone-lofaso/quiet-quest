@@ -76,16 +76,18 @@ export default function SignupPage({ navigation }) {
 
   return (
     <ScrollView contentContainerStyle={styles.contentContainerStyle}>
-        <View style={styles.logoContainer}>
-          <Text style={styles.logoText}>Quiet Quest</Text>
-        </View>
+      <View style={styles.logoContainer}>
+        <Text style={styles.logoText}>Quiet Quest</Text>
+      </View>
 
-        {/* Logo Image */}
+      {/* Logo Image */}
+      <TouchableOpacity onPress={() => navigation.navigate('StartPage')}>
         <Image 
           source={require('../../assets/logo.png')} 
           style={styles.logo}
           resizeMode="contain"
         />
+      </TouchableOpacity>
 
       <View style={styles.formContainer}>
         <Text style={styles.title}>Create an Account</Text>
