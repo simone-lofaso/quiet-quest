@@ -15,6 +15,13 @@ export default function TravelComfortScreen() {
     setSelectedOption(option);
   };
 
+  const updateInterests = async() => {
+    await FirebaseFirestore.instance.collection('users')
+    .doc(AuthService().currentUser?.uid)
+    .collection('travelComfortLevel')
+    .add(selectedOption)
+  }
+
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Comfort Level when Traveling</Text>
