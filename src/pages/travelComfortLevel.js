@@ -2,7 +2,7 @@
 import React, { useState } from 'react';
 import { StyleSheet, Text, View, TouchableOpacity } from 'react-native';
 
-export default function TravelComfortScreen() {
+export default function TravelComfortScreen({navigation}) {
   const [selectedOption, setSelectedOption] = useState(null);
 
   const options = [
@@ -15,7 +15,7 @@ export default function TravelComfortScreen() {
     setSelectedOption(option);
   };
 
-  const updateInterests = async() => {
+  const updateTravelComfortLevel = async() => {
     await FirebaseFirestore.instance.collection('users')
     .doc(AuthService().currentUser?.uid)
     .collection('travelComfortLevel')
@@ -49,11 +49,21 @@ export default function TravelComfortScreen() {
       </View>
 
       <View style={styles.footer}>
-        <TouchableOpacity style={styles.skipButton}>
-          <Text style={styles.footerText}>Skip</Text>
+       <TouchableOpacity
+          style={[styles.navButton, styles.skipButton]}
+          onPress={() => navigation.navigate('MapPage')}
+        >
+          <Text style={styles.navButtonText}>Skip</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.nextButton}>
-          <Text style={styles.footerText}>Next</Text>
+        <TouchableOpacity 
+        style={styles.nextButton} 
+        onPress={() => {
+          navigation.navigate('MapPage')
+          updateTravelComfortLevel();
+        }
+        }
+        >
+          <Text style={styles.navButtonText}>Next</Text>
         </TouchableOpacity>
       </View>
     </View>

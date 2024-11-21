@@ -1,11 +1,10 @@
 import React, { useState } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, Button } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
 import Emoji from 'react-native-emoji';
 
-const MoodCrowdedPlace = () => {
+const MoodCrowdedPlace = ({navigation}) => {
   const [selectedMood, setSelectedMood] = useState(null);
-  const navigation = useNavigation();
+
 
   // List of moods with emojis
   const moods = [
@@ -20,6 +19,12 @@ const MoodCrowdedPlace = () => {
   const handleSelectMood = (moodId) => {
     setSelectedMood(moodId);
   };
+  const updateMoodCrowded = async() => {
+    await FirebaseFirestore.instance.collection('users')
+    .doc(AuthService().currentUser?.uid)
+    .collection('moodCrowded')
+    .add(selectedOption)
+  }
 
   return (
     <View style={styles.container}>
@@ -42,13 +47,17 @@ const MoodCrowdedPlace = () => {
       <View style={styles.buttonContainer}>
         <TouchableOpacity
           style={[styles.navButton, styles.skipButton]}
-          //onPress={() => navigation.navigate('NextScreen')}
+          onPress={() => navigation.navigate('MoodCrowdedPage')}
         >
           <Text style={styles.navButtonText}>Skip</Text>
         </TouchableOpacity>
-        <TouchableOpacity
-          style={[styles.navButton, styles.nextButton]}
-          //onPress={() => navigation.navigate('NextScreen')}
+        <TouchableOpacity 
+        style={styles.nextButton} 
+        onPress={() => {
+          navigation.navigate('MoodCrowdedPage')
+          updateMoodCrowded();
+        }
+        }
         >
           <Text style={styles.navButtonText}>Next</Text>
         </TouchableOpacity>
