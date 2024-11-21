@@ -1,9 +1,14 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, Alert } from 'react-native';
 import { signOut } from 'firebase/auth';
-import { auth } from '../config/firebase';
+import { auth } from "../../firebaseConfig";
+import { ThemeContext } from '../utility/ThemeContext';
+import { darkTheme, lightTheme } from '../components/theme';
 
 export default function HomePage({ navigation }) {
+
+  const {isDarkMode} = useContext(ThemeContext);
+  const theme = isDarkMode ? darkTheme:lightTheme;
 
   const handleLogout = () => {
     signOut(auth)

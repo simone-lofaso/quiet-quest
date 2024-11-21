@@ -10,7 +10,7 @@ import {
   StyleSheet,
   Alert,
 } from "react-native";
-import { auth } from "../config/firebase";
+import { auth } from "../../firebaseConfig";
 import { Ionicons } from "@expo/vector-icons";
 
 export default function SignupPage({ navigation }) {

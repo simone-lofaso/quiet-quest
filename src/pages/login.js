@@ -1,7 +1,7 @@
 import React, {useState} from "react";
 import { Alert, TouchableOpacity } from "react-native";
 import { View, StyleSheet, TextInput, Text, Image } from "react-native";
-import { auth } from "../config/firebase";
+import { auth } from "../../firebaseConfig";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { Ionicons } from "@expo/vector-icons";
 

@@ -1,5 +1,5 @@
 import React from "react";
-import { NavigationContainer } from "@react-navigation/native";
+import { NavigationContainer, DefaultTheme, DarkTheme } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { Ionicons } from "@expo/vector-icons";
@@ -12,6 +12,10 @@ import ProfilePage from "./src/pages/profile";
 import SearchPage from "./src/pages/search";
 import BookmarkPage from "./src/pages/bookmark";
 import MapPage from "./src/pages/map";
+import SettingsPage from "./src/pages/settings";
+
+import {ThemeProvider} from "./src/utility/ThemeContext";
+import { lightTheme, darkTheme } from "./src/components/theme";
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -56,13 +60,18 @@ function HomeTabs() {
 
 export default function App() {
   return (
+    <ThemeProvider initialTheme={lightTheme}>
     <NavigationContainer>
       <Stack.Navigator initialRouteName="StartPage" screenOptions={{headerShown: false,}}>
         <Stack.Screen name="StartPage" component={StartPage} />
         <Stack.Screen name="SignupPage" component={SignupPage} />
         <Stack.Screen name="LoginPage" component={LoginPage} />
         <Stack.Screen name="HomePage" component={HomeTabs} />
+        <Stack.Screen name="ProfilePage" component={ProfilePage} />
+        <Stack.Screen name="SettingsPage" component={SettingsPage}/>
       </Stack.Navigator>
     </NavigationContainer>
+    </ThemeProvider>
+
   );
 }

@@ -66,3 +66,20 @@ git push
 5. Ensure all team members have pulled the most recent code in main, or else it can result in errors.
 
 6. Create new branch you want to work on with the new updated main.
+
+## INSTALLATIONS
+```
+npx expo install @react-native-async-storage/async-storage
+```
+
+```
+expo install expo-system-ui
+```
+
+```
+npx install react-redux redux
+```
+
+```
+expo install react-native-screens react-native-safe-area-context
+```

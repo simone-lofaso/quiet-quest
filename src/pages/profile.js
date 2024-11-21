@@ -1,8 +1,44 @@
 import React from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, Image } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, Image, Alert } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 
+//npm install firebase
+import { signOut } from 'firebase/auth';
+import { auth } from '../../firebaseConfig';
+
+//npm i @react-navigation/native
+import { useNavigation } from '@react-navigation/native';
+
+
 export default function ProfilePage() {
+  const navigation = useNavigation();    
+
+    const handleSignOut = async () => {
+        Alert.alert(
+            "Confirm Logout",
+            "Are you sure you want to log out?",
+            [
+                {
+                    text: "Cancel",
+                    onPress: () => console.log("Logout cancelled."),
+                    style:"cancel"
+                },
+                {
+                    text: "Logout",
+                    onPress: async () => {
+                        try {
+                            await signOut(auth);
+                            navigation.replace('LoginPage'); // Use replace to prevent going back to the HomePage after signing out
+                        } catch (error) {
+                            console.error(error);
+                        }
+                    }
+                }
+            ],
+            {cancelable: false}
+        );
+    };
+
   return (
     <View style={styles.container}>
       <View style={styles.header}>
@@ -27,13 +63,17 @@ export default function ProfilePage() {
           <Text style={styles.actionText}>My Profile</Text>
           <Ionicons name="chevron-forward" size={20} color="#6C3428" />
         </TouchableOpacity>
-        <TouchableOpacity style={styles.actionButton}>
+
+        {/*SETTINGS BUTTON*/}
+        <TouchableOpacity style={styles.actionButton} onPress={() => navigation.navigate('SettingsPage')}>
           <Ionicons name="settings" size={20} color="#6C3428" />
           <Text style={styles.actionText}>Setting</Text>
           <Ionicons name="chevron-forward" size={20} color="#6C3428" />
         </TouchableOpacity>
-        <TouchableOpacity style={styles.actionButton}>
-          <Ionicons name="log-out" size={20} color="#6C3428" />
+
+        {/*LOGOUT BUTTON*/}
+        <TouchableOpacity style={styles.actionButton} onPress={handleSignOut}>
+          <Ionicons name="log-out" size={20} color="#6C3428"/>
           <Text style={styles.actionText}>Log out</Text>
           <Ionicons name="chevron-forward" size={20} color="#6C3428" />
         </TouchableOpacity>
