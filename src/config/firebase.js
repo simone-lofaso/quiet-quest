@@ -25,6 +25,8 @@ export { auth };
 */
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
+import { getFirestore, collection, addDoc, getDocs } from "firebase/firestore";
+import { get } from "react-native/Libraries/TurboModule/TurboModuleRegistry";
 import { getAnalytics } from "firebase/analytics";
 import { getAuth } from 'firebase/auth';
 // TODO: Add SDKs for Firebase products that you want to use
@@ -45,6 +47,11 @@ const firebaseConfig = {
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
 const analytics = getAnalytics(app);
+//Initialize Authentication
 const auth = getAuth(app);
 
-export { auth };
+//Initialize Firestore
+const db = getFirestore(app)
+
+
+export { db, app, auth };
