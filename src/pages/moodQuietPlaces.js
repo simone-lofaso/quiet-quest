@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, Button } from 'react-native';
 import Emoji from 'react-native-emoji';
+import { addDoc, collection, getFirestore } from 'firebase/firestore'
+import { getAuth } from 'firebase/auth'
 
-const MoodQuietPlace = ({navigation}) => {
+const MoodQuietPlaces = ({navigation}) => {
   const [selectedMood, setSelectedMood] = useState(null);
 
 
@@ -19,11 +21,12 @@ const MoodQuietPlace = ({navigation}) => {
   const handleSelectMood = (moodId) => {
     setSelectedMood(moodId);
   };
+
   const updateMoodQuiet = async() => {
-    await FirebaseFirestore.instance.collection('users')
-    .doc(AuthService().currentUser?.uid)
-    .collection('moodQuiet')
-    .add(selectedOption)
+    const instance = getFirestore();
+    const auth = getAuth()
+    await addDoc(collection(instance, `users/${auth.currentUser.uid}/moodQuiet`), selectedOption)
+
   }
 
   return (
@@ -47,14 +50,14 @@ const MoodQuietPlace = ({navigation}) => {
       <View style={styles.buttonContainer}>
         <TouchableOpacity
           style={[styles.navButton, styles.skipButton]}
-          onPress={() => navigation.navigate('TravelComfortLevel')}
+          onPress={() => navigation.navigate('TravelComfortPage')}
         >
           <Text style={styles.navButtonText}>Skip</Text>
         </TouchableOpacity>
         <TouchableOpacity 
         style={styles.nextButton} 
         onPress={() => {
-          navigation.navigate('TravelComfortLevel')
+          navigation.navigate('TravelComfortPage')
           updateMoodQuiet();
         }
         }
@@ -129,4 +132,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default MoodQuietPlace;
+export default MoodQuietPlaces;

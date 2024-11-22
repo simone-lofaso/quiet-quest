@@ -14,7 +14,9 @@ import SearchPage from "./src/pages/search";
 import BookmarkPage from "./src/pages/bookmark";
 import MapPage from "./src/pages/map";
 import InterestPage from "./src/pages/interests";
-import MoodQuietPage from "./src/pages/moodQuietPlaces"
+import MoodQuietPlaces from "./src/pages/moodQuietPlaces"
+import MoodCrowdedPage from "./src/pages/moodCrowdedPage";
+import TravelComfortScreen from "./src/pages/travelComfortLevel";
 import VerificationEmailPage from "./src/pages/verification";
 import ForgotPasswordPage from "./src/pages/forgotpassword";
 import { Alert } from "react-native";
@@ -98,6 +100,7 @@ function HomeTabs({route}) {
 }
 
 export default function App() {
+
   return (
     <NavigationContainer>
       <Stack.Navigator initialRouteName="StartPage" screenOptions={{headerShown: false,}}>
@@ -105,11 +108,11 @@ export default function App() {
         <Stack.Screen name="SignupPage" component={SignupPage} />
         <Stack.Screen name="LoginPage" component={LoginPage} />
         <Stack.Screen name="HomePage" component={HomeTabs} />
-        <Stack.Screen name = "InterestPage" component={InterestPage} />
-        <Stack.Screen name = "MoodQuietPage" component={MoodQuietPage} />
-        <Stack.Screen name = "MoodCrowdedPage" compnent={MoodCrowdedPage} />
-        <Stack.Screen name = "TravelComfortPage" component ={TravelComfortPage} />
-        <Stack.Screen name = "MapPage" component = {MapPage} />
+        <Stack.Screen name="InterestPage" component={InterestPage} />
+        <Stack.Screen name="MoodQuietPage" component={MoodQuietPlaces} />
+        <Stack.Screen name="MoodCrowdedPage" component={MoodCrowdedPage} />
+        <Stack.Screen name="TravelComfortPage" component={TravelComfortScreen} />
+        <Stack.Screen name="MapPage" component={MapPage} />
         <Stack.Screen name="VerificationEmailPage" component={VerificationEmailPage} />
         <Stack.Screen name="ForgotPasswordPage" component={ForgotPasswordPage} />
       </Stack.Navigator>
