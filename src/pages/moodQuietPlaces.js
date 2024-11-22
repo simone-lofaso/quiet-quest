@@ -1,12 +1,11 @@
 import React, { useState } from 'react';
-import { View, Text, TouchableOpacity, StyleSheet, Button } from 'react-native';
+import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import Emoji from 'react-native-emoji';
-import { addDoc, collection, getFirestore } from 'firebase/firestore'
-import { getAuth } from 'firebase/auth'
+import { usePreferencesContext } from '../services/usePreferences';
 
 const MoodQuietPlaces = ({navigation}) => {
-  const [selectedMood, setSelectedMood] = useState(null);
-
+  const [selectedMoodId, setSelectedMoodId] = useState();
+  const { preferences, setPreferences } = usePreferencesContext();
 
   // List of moods with emojis
   const moods = [
@@ -19,15 +18,8 @@ const MoodQuietPlaces = ({navigation}) => {
   ];
 
   const handleSelectMood = (moodId) => {
-    setSelectedMood(moodId);
+    setSelectedMoodId(moodId);
   };
-
-  const updateMoodQuiet = async() => {
-    const instance = getFirestore();
-    const auth = getAuth()
-    await addDoc(collection(instance, `users/${auth.currentUser.uid}/moodQuiet`), selectedOption)
-
-  }
 
   return (
     <View style={styles.container}>
@@ -38,7 +30,7 @@ const MoodQuietPlaces = ({navigation}) => {
             key={mood.id}
             style={[
               styles.moodButton,
-              selectedMood === mood.id && styles.moodButtonSelected,
+              selectedMoodId === mood.id && styles.moodButtonSelected,
             ]}
             onPress={() => handleSelectMood(mood.id)}
           >
@@ -50,15 +42,15 @@ const MoodQuietPlaces = ({navigation}) => {
       <View style={styles.buttonContainer}>
         <TouchableOpacity
           style={[styles.navButton, styles.skipButton]}
-          onPress={() => navigation.navigate('TravelComfortPage')}
+          onPress={() => navigation.navigate('MoodCrowdedPage')}
         >
           <Text style={styles.navButtonText}>Skip</Text>
         </TouchableOpacity>
         <TouchableOpacity 
         style={styles.nextButton} 
         onPress={() => {
-          navigation.navigate('TravelComfortPage')
-          updateMoodQuiet();
+          setPreferences({ ...preferences, selectedMoodId });
+          navigation.navigate('MoodCrowdedPage')
         }
         }
         >

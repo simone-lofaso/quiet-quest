@@ -1,10 +1,12 @@
 // src/InterestsScreen.js
-import React, { useState } from 'react';
-import { StyleSheet, Text, View, TouchableOpacity } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
+import React, { useState } from 'react';
+import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { usePreferencesContext } from '../services/usePreferences';
 
 export default function InterestsScreen({navigation}) {
   const [selectedInterests, setSelectedInterests] = useState([]);
+  const { setPreferences } = usePreferencesContext();
 
   const interests = [
     { name: 'Hiking', icon: 'walk' },
@@ -14,17 +16,11 @@ export default function InterestsScreen({navigation}) {
     { name: 'Skiing', icon: 'snow' },
     { name: 'Crocheting', icon: 'pricetag' },
     { name: 'Shopping', icon: 'bag' },
-    { name: 'Snowboarding', icon: 'snowboard' }
+    { name: 'Snowboarding', icon: 'snow' }
   ];
 
-  const updateInterests = async() => {
-    await FirebaseFirestore.instance.collection('users')
-    .doc(AuthService().currentUser?.uid)
-    .collection('interests')
-    .add(selectedInterests)
-  }
-
   const toggleInterest = (interest) => {
+    console.log(`interest ${interest}`)
     if (selectedInterests.includes(interest)) {
       setSelectedInterests(selectedInterests.filter(i => i !== interest));
     } else {
@@ -60,9 +56,9 @@ export default function InterestsScreen({navigation}) {
         </TouchableOpacity>
         <TouchableOpacity 
         style={styles.nextButton} 
-        onPress={() => {
+        onPress={() => {  
+          setPreferences({ selectedInterests });
           navigation.navigate('MoodQuietPage')
-          updateInterests();
         }
         }
         >

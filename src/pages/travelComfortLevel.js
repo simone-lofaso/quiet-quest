@@ -1,9 +1,13 @@
 // src/TravelComfortScreen.js
+import { getAuth } from 'firebase/auth';
+import { doc, getDocFromServer, getFirestore, setDoc } from 'firebase/firestore';
 import React, { useState } from 'react';
-import { StyleSheet, Text, View, TouchableOpacity } from 'react-native';
+import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { usePreferencesContext } from '../services/usePreferences';
 
 export default function TravelComfortScreen({navigation}) {
   const [selectedOption, setSelectedOption] = useState(null);
+  const { preferences, setPreferences } = usePreferencesContext();
 
   const options = [
     'Traveling Solo',
@@ -16,12 +20,17 @@ export default function TravelComfortScreen({navigation}) {
   };
 
   const updateTravelComfortLevel = async() => {
-    await FirebaseFirestore.instance.collection('users')
-    .doc(AuthService().currentUser?.uid)
-    .collection('travelComfortLevel')
-    .add(selectedOption)
+    const instance = getFirestore();
+    const auth = getAuth()
+    try {
+      const { uid } = auth.currentUser;
+      const user = await getDocFromServer(doc(instance, `users/${uid}`))
+      await setDoc(doc(instance, `users/${uid}`), {...user.data, ...preferences, selectedOption})
+      setPreferences({})
+    } catch (e) {
+      console.error(e)
   }
-
+  }
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Comfort Level when Traveling</Text>
@@ -57,9 +66,10 @@ export default function TravelComfortScreen({navigation}) {
         </TouchableOpacity>
         <TouchableOpacity 
         style={styles.nextButton} 
-        onPress={() => {
+        onPress={async () => {
+          await updateTravelComfortLevel();
+          console.log('Good :)')  
           navigation.navigate('MapPage')
-          updateTravelComfortLevel();
         }
         }
         >
