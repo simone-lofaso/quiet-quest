@@ -20,12 +20,13 @@ import TravelComfortScreen from "./src/pages/travelComfortLevel";
 import VerificationEmailPage from "./src/pages/verification";
 import ForgotPasswordPage from "./src/pages/forgotpassword";
 import { Alert } from "react-native";
+import { PreferenceProvider } from "./src/services/usePreferences";
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
 
 //Bottom Navbar for Homepage
-function HomeTabs({route}) {
+function HomeTabs({ route }) {
   const isGuest = route.params?.isGuest || false;
   const initialRouteName = route.params?.initialRouteName || 'Home';
 
@@ -89,33 +90,35 @@ function HomeTabs({route}) {
           );
         },
       })}
-      >
-        <Tab.Screen name="Home" component={HomePage} options={{ headerShown: false }} />
-        <Tab.Screen name="Search" component={SearchPage} options={{ headerShown: false }} />
-        <Tab.Screen name="Map" component={MapPage} options={{ headerShown: false }}/>
-        <Tab.Screen name="Bookmark" component={BookmarkPage} options={{ headerShown: false }}/>
-        <Tab.Screen name="Profile" component={ProfilePage} options={{ headerShown: false }}/>
-      </Tab.Navigator>
+    >
+      <Tab.Screen name="Home" component={HomePage} options={{ headerShown: false }} />
+      <Tab.Screen name="Search" component={SearchPage} options={{ headerShown: false }} />
+      <Tab.Screen name="Map" component={MapPage} options={{ headerShown: false }} />
+      <Tab.Screen name="Bookmark" component={BookmarkPage} options={{ headerShown: false }} />
+      <Tab.Screen name="Profile" component={ProfilePage} options={{ headerShown: false }} />
+    </Tab.Navigator>
   );
 }
 
 export default function App() {
 
   return (
-    <NavigationContainer>
-      <Stack.Navigator initialRouteName="StartPage" screenOptions={{headerShown: false,}}>
-        <Stack.Screen name="StartPage" component={StartPage} />
-        <Stack.Screen name="SignupPage" component={SignupPage} />
-        <Stack.Screen name="LoginPage" component={LoginPage} />
-        <Stack.Screen name="HomePage" component={HomeTabs} />
-        <Stack.Screen name="InterestPage" component={InterestPage} />
-        <Stack.Screen name="MoodQuietPage" component={MoodQuietPlaces} />
-        <Stack.Screen name="MoodCrowdedPage" component={MoodCrowdedPage} />
-        <Stack.Screen name="TravelComfortPage" component={TravelComfortScreen} />
-        <Stack.Screen name="MapPage" component={MapPage} />
-        <Stack.Screen name="VerificationEmailPage" component={VerificationEmailPage} />
-        <Stack.Screen name="ForgotPasswordPage" component={ForgotPasswordPage} />
-      </Stack.Navigator>
-    </NavigationContainer>
+    <PreferenceProvider>
+      <NavigationContainer>
+        <Stack.Navigator initialRouteName="StartPage" screenOptions={{ headerShown: false, }}>
+          <Stack.Screen name="StartPage" component={StartPage} />
+          <Stack.Screen name="SignupPage" component={SignupPage} />
+          <Stack.Screen name="LoginPage" component={LoginPage} />
+          <Stack.Screen name="HomePage" component={HomeTabs} />
+          <Stack.Screen name="InterestPage" component={InterestPage} />
+          <Stack.Screen name="MoodQuietPage" component={MoodQuietPlaces} />
+          <Stack.Screen name="MoodCrowdedPage" component={MoodCrowdedPage} />
+          <Stack.Screen name="TravelComfortPage" component={TravelComfortScreen} />
+          <Stack.Screen name="MapPage" component={MapPage} />
+          <Stack.Screen name="VerificationEmailPage" component={VerificationEmailPage} />
+          <Stack.Screen name="ForgotPasswordPage" component={ForgotPasswordPage} />
+        </Stack.Navigator>
+      </NavigationContainer>
+    </PreferenceProvider>
   );
 }

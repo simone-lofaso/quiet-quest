@@ -1,9 +1,11 @@
 import React, { useState } from 'react';
-import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
+import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import Emoji from 'react-native-emoji';
+import { usePreferencesContext } from '../services/usePreferences';
+
 const MoodCrowdedPage = ({ navigation }) => {
     const [selectedMood, setSelectedMood] = useState(null);
-
+    const { preferences, setPreferences } = usePreferencesContext();
 
     // List of moods with emojis
     const moods = [
@@ -18,12 +20,6 @@ const MoodCrowdedPage = ({ navigation }) => {
     const handleSelectMood = (moodId) => {
         setSelectedMood(moodId);
     };
-    const updateMoodCrowded = async () => {
-        await FirebaseFirestore.instance.collection('users')
-            .doc(AuthService().currentUser?.uid)
-            .collection('moodCrowded')
-            .add(selectedOption)
-    }
 
     return (
         <View style={styles.container}>
@@ -46,17 +42,16 @@ const MoodCrowdedPage = ({ navigation }) => {
             <View style={styles.buttonContainer}>
                 <TouchableOpacity
                     style={[styles.navButton, styles.skipButton]}
-                    onPress={() => navigation.navigate('MoodCrowdedPage')}
+                    onPress={() => navigation.navigate('TravelComfortPage')}
                 >
                     <Text style={styles.navButtonText}>Skip</Text>
                 </TouchableOpacity>
                 <TouchableOpacity
                     style={styles.nextButton}
-                    onPress={() => {
-                        navigation.navigate('MoodCrowdedPage')
-                        updateMoodCrowded();
-                    }
-                    }
+                    onPress={async () => {
+                        setPreferences({ ...preferences, selectedMood });
+                        navigation.navigate('TravelComfortPage')
+                    }}
                 >
                     <Text style={styles.navButtonText}>Next</Text>
                 </TouchableOpacity>

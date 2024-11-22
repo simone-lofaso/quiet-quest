@@ -1,10 +1,11 @@
 import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 
-export default function MapPage() {
+export default function MapPage({navigation}) {
   return (
     <View style={styles.container}>
       <Text style={styles.text}>This is the Map Page</Text>
+      <TouchableOpacity onPress={() => navigation.navigate('HomePage')}><Text>GO TO HOME DLETE LATER</Text></TouchableOpacity>
     </View>
   );
 }
