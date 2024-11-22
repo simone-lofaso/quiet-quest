@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import { StyleSheet, Text, View, TouchableOpacity } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 
-export default function InterestsScreen() {
+export default function InterestsScreen({navigation}) {
   const [selectedInterests, setSelectedInterests] = useState([]);
 
   const interests = [
@@ -52,12 +52,19 @@ export default function InterestsScreen() {
       </View>
 
       <View style={styles.footer}>
-        <TouchableOpacity style={styles.skipButton}>
-          <Text style={styles.footerText}>Skip</Text>
+        <TouchableOpacity
+          style={[styles.navButton, styles.skipButton]}
+          onPress={() => navigation.navigate('MoodQuietPage')}
+        >
+        <Text style={styles.navButtonText}>Skip</Text>
         </TouchableOpacity>
         <TouchableOpacity 
         style={styles.nextButton} 
-        //onPress={() => navigation.navigate('NextScreen')}
+        onPress={() => {
+          navigation.navigate('MoodQuietPage')
+          updateInterests();
+        }
+        }
         >
           <Text style={styles.footerText}>Next</Text>
         </TouchableOpacity>
