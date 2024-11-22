@@ -20,7 +20,7 @@ let locationsOfInterest = [
 
 export default function MapPage() {
   const onRegionChange = (region) =>{
-    console.log(region);
+    // console.log(region);
   };
 
   const showLocationsOfInterest = () => {
