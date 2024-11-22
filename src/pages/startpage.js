@@ -17,6 +17,10 @@ export default function StartPage({ navigation }) {
   
         {/* Buttons */}
         <View style={styles.buttonContainer}>
+            {/* Guest Mode Button */}
+            <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('HomePage', {isGuest: true, initialRouteName: 'Map' })}>
+              <Text style={styles.buttonText}>Guest</Text>
+            </TouchableOpacity>
             <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('SignupPage')}>
                 <Text style={styles.buttonText}>Signup</Text>
             </TouchableOpacity>

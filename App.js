@@ -3,6 +3,7 @@ import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { Ionicons } from "@expo/vector-icons";
+import { TouchableOpacity } from 'react-native';
 
 import StartPage from "./src/pages/startpage";
 import SignupPage from "./src/pages/signup";
@@ -14,15 +15,42 @@ import BookmarkPage from "./src/pages/bookmark";
 import MapPage from "./src/pages/map";
 import InterestPage from "./src/pages/interests";
 import MoodQuietPage from "./src/pages/moodQuietPlaces"
+import VerificationEmailPage from "./src/pages/verification";
+import ForgotPasswordPage from "./src/pages/forgotpassword";
+import { Alert } from "react-native";
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
 
 //Bottom Navbar for Homepage
-function HomeTabs() {
+function HomeTabs({route}) {
+  const isGuest = route.params?.isGuest || false;
+  const initialRouteName = route.params?.initialRouteName || 'Home';
+
+  const handleGuestRestriction = (navigation, screenName) => {
+    if (isGuest && screenName !== 'Map') {
+      Alert.alert(
+        'Access Restricted', 'Please sign up or log in to access this page.',
+        [
+          {
+            text: 'OK',
+            onPress: () => {
+              // Redirect to StartPage after showing alert
+              navigation.navigate('StartPage');
+            },
+          },
+        ],
+        { cancelable: false }
+      );
+      return false;
+    }
+    return true;
+  };
+
   return (
     <Tab.Navigator
-      screenOptions={({ route }) => ({
+      initialRouteName={initialRouteName}
+      screenOptions={({ route, navigation }) => ({
         tabBarIcon: ({ focused, color, size }) => {
           let iconName;
 
@@ -45,13 +73,26 @@ function HomeTabs() {
         tabBarStyle: {
           backgroundColor: '#FDF0D1',
         },
+        tabBarButton: (props) => {
+          const { onPress } = props;
+          return (
+            <TouchableOpacity
+              {...props}
+              onPress={() => {
+                if (handleGuestRestriction(navigation, route.name)) {
+                  onPress();
+                }
+              }}
+            />
+          );
+        },
       })}
       >
-        <Tab.Screen name="Home" component={HomePage} />
-        <Tab.Screen name="Search" component={SearchPage} />
-        <Tab.Screen name="Map" component={MapPage} />
-        <Tab.Screen name="Bookmark" component={BookmarkPage} />
-        <Tab.Screen name="Profile" component={ProfilePage} />
+        <Tab.Screen name="Home" component={HomePage} options={{ headerShown: false }} />
+        <Tab.Screen name="Search" component={SearchPage} options={{ headerShown: false }} />
+        <Tab.Screen name="Map" component={MapPage} options={{ headerShown: false }}/>
+        <Tab.Screen name="Bookmark" component={BookmarkPage} options={{ headerShown: false }}/>
+        <Tab.Screen name="Profile" component={ProfilePage} options={{ headerShown: false }}/>
       </Tab.Navigator>
   );
 }
@@ -69,6 +110,8 @@ export default function App() {
         <Stack.Screen name = "MoodCrowdedPage" compnent={MoodCrowdedPage} />
         <Stack.Screen name = "TravelComfortPage" component ={TravelComfortPage} />
         <Stack.Screen name = "MapPage" component = {MapPage} />
+        <Stack.Screen name="VerificationEmailPage" component={VerificationEmailPage} />
+        <Stack.Screen name="ForgotPasswordPage" component={ForgotPasswordPage} />
       </Stack.Navigator>
     </NavigationContainer>
   );

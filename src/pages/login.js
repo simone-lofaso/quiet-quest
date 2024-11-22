@@ -14,8 +14,19 @@ export default function LoginPage({ navigation }) {
         signInWithEmailAndPassword(auth, email, password)
             .then((userCredential) => {
                 const user = userCredential.user;
-                Alert.alert("Successfully Login!", `Welcome back, ${user.email}`);
-                navigation.navigate('HomePage');
+                // Alert.alert("Successfully Login!", `Welcome back, ${user.email}`);
+                // navigation.navigate('HomePage');
+
+                // Check if email is verified
+                if (user.emailVerified) {
+                    Alert.alert("Successfully Login!");
+                    navigation.navigate("HomePage");
+                } else {
+                Alert.alert(
+                    "Email Verification Required",
+                    "Please verify your email before logging in."
+                );
+                }
             })
             .catch((error) => {
                 console.log('Error Code:', error.code);  
@@ -41,12 +52,14 @@ export default function LoginPage({ navigation }) {
                 <Text style={styles.logoText}>Quiet Quest</Text>
             </View>
 
-            {/* Logo Image */}
-            <Image 
-            source={require('../../assets/logo.png')} 
-            style={styles.logo}
-            resizeMode="contain"
-            />
+            {/* Clickable Logo Image */}
+            <TouchableOpacity onPress={() => navigation.navigate('StartPage')}>
+                <Image 
+                source={require('../../assets/logo.png')} 
+                style={styles.logo}
+                resizeMode="contain"
+                />
+            </TouchableOpacity>
 
             {/* Form Section */}
             <View style={styles.formContainer}>

@@ -1,4 +1,4 @@
-import { createUserWithEmailAndPassword } from "firebase/auth";
+import { createUserWithEmailAndPassword, sendEmailVerification } from "firebase/auth";
 import React, { useState } from "react";
 import {
   View,
@@ -27,6 +27,17 @@ export default function SignupPage({ navigation }) {
       return;
     }
 
+  // Check for valid email format
+  const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.(com)$/;
+
+  // Check for vaild email format is gmail or not
+  //const emailRegex = /^[a-zA-Z0-9._%+-]+@gmail\.com$/; 
+  if (!emailRegex.test(email)) {
+    //console.log("Email validation failed");
+    Alert.alert("Invalid email format!");
+    return;
+  }
+
     if (password !== confirmPassword) {
       Alert.alert("Passwords do not match!");
       return;
@@ -35,13 +46,28 @@ export default function SignupPage({ navigation }) {
   createUserWithEmailAndPassword(auth, email, password)
     .then((userCredential) => {
       const user = userCredential.user;
-      Alert.alert("Successfully Signup!", `Welcome ${user.email}`);
+      // Alert.alert("Successfully Signup!", `Welcome ${username}`);
       // After successful signup, navigate to LoginPage
-      navigation.navigate('LoginPage');
+      // navigation.navigate('LoginPage');
+
+      // Send email verification
+      sendEmailVerification(user)
+      .then(() => {
+        Alert.alert(
+          "Signup Successful!",
+        );
+        // Navigate to VerificationEmailPage
+        navigation.navigate('VerificationEmailPage');
+      })
+      .catch((error) => {
+        Alert.alert("Verification Email Error", error.message);
+      });
     })
     .catch((error) => {
-      if(error.code === 'auth/email-already-in-use') {
-        Alert.alert("Login Error", "Email already exists!");
+      if(error.code === 'auth/invalid-email') {
+        Alert.alert("Signup Error", "Invalid email format!");
+      } else if(error.code === 'auth/email-already-in-use') {
+        Alert.alert("Signup Error", "Email already exists!");
       } else {
         Alert.alert("Signup Error!", error.message);
       }
@@ -50,16 +76,18 @@ export default function SignupPage({ navigation }) {
 
   return (
     <ScrollView contentContainerStyle={styles.contentContainerStyle}>
-        <View style={styles.logoContainer}>
-          <Text style={styles.logoText}>Quiet Quest</Text>
-        </View>
+      <View style={styles.logoContainer}>
+        <Text style={styles.logoText}>Quiet Quest</Text>
+      </View>
 
-        {/* Logo Image */}
+      {/* Logo Image */}
+      <TouchableOpacity onPress={() => navigation.navigate('StartPage')}>
         <Image 
           source={require('../../assets/logo.png')} 
           style={styles.logo}
           resizeMode="contain"
         />
+      </TouchableOpacity>
 
       <View style={styles.formContainer}>
         <Text style={styles.title}>Create an Account</Text>
