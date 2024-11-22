@@ -12,7 +12,11 @@
       "backgroundColor": "#ffffff"
     },
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.cmpe.quiet-quest",
+      "config": {
+        "googleMapsApiKey": "AIzaSyAFqi4XyeMYP_6aP1Bc38NlevYx5nj0sMs"
+      }
     },
     "android": {
       "adaptiveIcon": {
