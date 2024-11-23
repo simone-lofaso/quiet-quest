@@ -35,7 +35,15 @@ const MoodQuietPlaces = ({navigation}) => {
             onPress={() => handleSelectMood(mood.id)}
           >
             <Emoji name={mood.emoji} style={styles.emoji} />
-            <Text style={styles.moodLabel}>{mood.label}</Text>
+            {/* <Text style={styles.moodLabel}>{mood.label}</Text> */}
+            <Text
+              style={[
+              styles.moodLabel,
+              selectedMoodId === mood.id && styles.selectedMoodLabel, 
+              ]}
+            >
+              {mood.label}
+            </Text>
           </TouchableOpacity>
         ))}
       </View>
@@ -64,63 +72,89 @@ const MoodQuietPlaces = ({navigation}) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#FAEBCD',
+    backgroundColor: '#FDF0D1', // Matches app theme
     paddingHorizontal: 20,
-    paddingVertical: 40,
+    paddingVertical: 30,
   },
+
   header: {
-    fontSize: 22,
+    fontSize: 28,
     fontWeight: 'bold',
-    color: '#7c4d1b',
-    textAlign: 'center',
+    color: '#6C3428', // Darker brown for consistency
+    marginTop: 90,
     marginBottom: 20,
+    textAlign: 'center',
   },
+
   moodGrid: {
     flexDirection: 'row',
     flexWrap: 'wrap',
     justifyContent: 'space-between',
+    marginTop: 20,
   },
+
   moodButton: {
     width: '30%',
-    backgroundColor: '#e3b591',
+    backgroundColor: '#DFA878', // Beige button color
     paddingVertical: 20,
-    borderRadius: 10,
+    borderRadius: 20,
     alignItems: 'center',
     marginVertical: 10,
+    shadowColor: '#000', // Subtle shadow for elevation
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 5,
   },
+
   moodButtonSelected: {
-    backgroundColor: '#bf7453',
+    backgroundColor: '#BA704F', // Dark brown for selected button
   },
+
   emoji: {
-    fontSize: 30,
+    fontSize: 40, // Larger emoji for visibility
     marginBottom: 10,
   },
+
   moodLabel: {
     fontSize: 16,
-    fontWeight: '500',
-    color: '#7c4d1b',
+    fontWeight: 'bold',
+    color: 'black', // Dark brown for unselected text
   },
+
+  selectedMoodLabel: {
+    color: 'white', 
+  },
+
   buttonContainer: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    marginTop: 40,
+    marginTop: 50,
   },
+
   navButton: {
-    width: '45%',
     paddingVertical: 15,
     borderRadius: 10,
     alignItems: 'center',
   },
+
   skipButton: {
-    backgroundColor: '#c2dfea',
+    backgroundColor: '#CEE6F3',
+    paddingVertical: 15,
+    paddingHorizontal: 40,
+    borderRadius: 20,
   },
+
   nextButton: {
-    backgroundColor: '#c2dfea',
+    backgroundColor: '#CEE6F3',
+    paddingVertical: 15,
+    paddingHorizontal: 40,
+    borderRadius: 20,
   },
+
   navButtonText: {
     fontSize: 18,
     fontWeight: 'bold',
-    color: '#7c4d1b',
+    color: 'black',
   },
 });
 

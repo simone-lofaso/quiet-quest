@@ -28,8 +28,8 @@ export default function ProfilePage({ navigation }) {
       <TouchableOpacity style={styles.logoutButton} onPress={handleLogout}>
         <Text style={styles.logoutButtonText}>Logout</Text>
       </TouchableOpacity>
-      <TouchableOpacity style={styles.logoutButtonText} onPress={() => navigation.navigate("InterestPage")}>
-        <Text style={styles.logoutButtonText}>Quiz</Text>
+      <TouchableOpacity style={styles.quizButton} onPress={() => navigation.navigate("InterestPage")}>
+        <Text style={styles.quizButtonText}>Quiz</Text>
       </TouchableOpacity>
     </View>
   );
@@ -64,6 +64,24 @@ const styles = StyleSheet.create({
   },
 
   logoutButtonText: {
+    color: '#6C3428',
+    fontSize: 18,
+    fontWeight: 'bold',
+    fontFamily: 'SF Pro Text',
+  },
+
+  quizButton: {
+    backgroundColor: '#CEE6F3',
+    padding: 15,
+    borderRadius: 15,
+    marginTop: 20,
+    marginBottom: 20,
+    width: '40%',
+    alignSelf: 'center',
+    alignItems: 'center',
+  },
+
+  quizButtonText: {
     color: '#6C3428',
     fontSize: 18,
     fontWeight: 'bold',

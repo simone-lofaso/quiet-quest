@@ -42,7 +42,15 @@ export default function InterestsScreen({navigation}) {
             onPress={() => toggleInterest(item.name)}
           >
             <Ionicons name={item.icon} size={20} color="black" />
-            <Text style={styles.interestText}>{item.name}</Text>
+            {/* <Text style={styles.interestText}>{item.name}</Text> */}
+            <Text
+              style={[
+                styles.interestText,
+                selectedInterests.includes(item.name) && styles.selectedInterestText, 
+              ]}
+            >
+              {item.name}
+            </Text>
           </TouchableOpacity>
         ))}
       </View>
@@ -72,60 +80,89 @@ export default function InterestsScreen({navigation}) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#FAEBCD',
-    paddingTop: 40,
+    backgroundColor: '#FDF0D1', // Matches app theme
     paddingHorizontal: 20,
+    paddingVertical: 30,
   },
+
   title: {
-    fontSize: 24,
+    fontSize: 28,
     fontWeight: 'bold',
-    color: '#6C4A4A',
+    color: '#6C3428', // Darker brown for consistency
+    marginTop: 90,
     marginBottom: 20,
     textAlign: 'center',
   },
+
   interestsContainer: {
     flexDirection: 'row',
     flexWrap: 'wrap',
     justifyContent: 'space-between',
+    marginTop: 20,
   },
+
   interestButton: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: '#D3A690',
-    paddingVertical: 10,
+    backgroundColor: '#DFA878', 
+    paddingVertical: 15,
     paddingHorizontal: 20,
     marginVertical: 10,
     borderRadius: 20,
-    width: '45%',  // Adjust width as needed
+    width: '45%', // Consistent with other button sizes
     justifyContent: 'center',
+    shadowColor: '#000', // Subtle shadow
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 5,
   },
+
   selectedInterestButton: {
-    backgroundColor: '#A56E50',
+    backgroundColor: '#BA704F', // Highlighted selection in dark brown
   },
+
   interestText: {
     fontSize: 16,
     marginLeft: 10,
-    color: 'black',
+    color: 'black', // White text for contrast
+    fontWeight: 'bold',
   },
+
+  selectedInterestText: {
+    color: 'white', // White text for selected items
+  },
+
   footer: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    marginTop: 40,
+    marginTop: 50,
   },
+
   skipButton: {
-    backgroundColor: '#D3E4F6',
-    paddingVertical: 10,
-    paddingHorizontal: 30,
+    backgroundColor: '#CEE6F3',
+    paddingVertical: 15,
+    paddingHorizontal: 40,
     borderRadius: 20,
   },
+
   nextButton: {
-    backgroundColor: '#D3E4F6',
-    paddingVertical: 10,
-    paddingHorizontal: 30,
+    backgroundColor: '#CEE6F3',
+    paddingVertical: 15,
+    paddingHorizontal: 40,
     borderRadius: 20,
   },
+
+  navButtonText: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    color: 'black', 
+  },
+
   footerText: {
     fontSize: 18,
+    fontWeight: 'bold',
     color: 'black',
+    // color: '#6C3428', 
   },
 });
+

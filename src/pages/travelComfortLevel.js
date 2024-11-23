@@ -60,7 +60,8 @@ export default function TravelComfortScreen({navigation}) {
       <View style={styles.footer}>
        <TouchableOpacity
           style={[styles.navButton, styles.skipButton]}
-          onPress={() => navigation.navigate('MapPage')}
+          //Map tab within the HomeTabs navigator (Tab.Navigator) to show nav bar at the bottom
+          onPress={() => navigation.navigate('HomePage', { screen: 'Map' })}
         >
           <Text style={styles.navButtonText}>Skip</Text>
         </TouchableOpacity>
@@ -69,7 +70,8 @@ export default function TravelComfortScreen({navigation}) {
         onPress={async () => {
           await updateTravelComfortLevel();
           console.log('Good :)')  
-          navigation.navigate('MapPage')
+          // navigation.navigate('MapPage')
+          navigation.navigate('HomePage', { screen: 'Map' }); // Specify the tab name
         }
         }
         >
@@ -83,59 +85,84 @@ export default function TravelComfortScreen({navigation}) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#FAEBCD',
-    paddingTop: 40,
+    backgroundColor: '#FDF0D1',
     paddingHorizontal: 20,
+    paddingVertical: 30,
   },
+
   title: {
-    fontSize: 24,
+    fontSize: 28,
     fontWeight: 'bold',
-    color: '#6C4A4A',
-    marginBottom: 30,
+    color: '#6C3428', // Darker brown for consistency
+    marginTop: 90,
+    marginBottom: 20,
     textAlign: 'center',
   },
+
   optionsContainer: {
     flexDirection: 'column',
     alignItems: 'center',
+    marginTop: 20,
   },
+  
   optionButton: {
-    backgroundColor: '#D3A690',
+    backgroundColor: '#DFA878', 
     paddingVertical: 15,
     paddingHorizontal: 20,
     marginVertical: 10,
-    borderRadius: 25,
-    width: '80%',
+    borderRadius: 20,
+    width: '85%', // Consistent with other button sizes
     alignItems: 'center',
+    shadowColor: '#000', // Subtle shadow
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 5,
   },
+
   selectedOptionButton: {
-    backgroundColor: '#A56E50',
+    backgroundColor: '#BA704F',
   },
+
   optionText: {
     fontSize: 16,
-    color: 'black',
+    marginLeft: 10,
+    color: 'black', // White text for contrast
+    fontWeight: 'bold',
   },
+
   selectedOptionText: {
     color: 'white',
   },
+
   footer: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     marginTop: 50,
   },
+
   skipButton: {
-    backgroundColor: '#D3E4F6',
-    paddingVertical: 10,
+    backgroundColor: '#CEE6F3',
+    paddingVertical: 15,
     paddingHorizontal: 40,
     borderRadius: 20,
   },
+
   nextButton: {
-    backgroundColor: '#D3E4F6',
-    paddingVertical: 10,
+    backgroundColor: '#CEE6F3',
+    paddingVertical: 15,
     paddingHorizontal: 40,
     borderRadius: 20,
   },
+
+  navButtonText: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    color: 'black', 
+  },
+
   footerText: {
     fontSize: 18,
+    fontWeight: 'bold',
     color: 'black',
   },
 });
