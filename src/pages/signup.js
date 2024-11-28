@@ -12,6 +12,8 @@ import {
 } from "react-native";
 import { auth } from "../config/firebase";
 import { Ionicons } from "@expo/vector-icons";
+import { updateProfile } from "firebase/auth";
+
 
 export default function SignupPage({ navigation }) {
   const [username, setUsername] = useState("");
@@ -49,6 +51,14 @@ export default function SignupPage({ navigation }) {
       // Alert.alert("Successfully Signup!", `Welcome ${username}`);
       // After successful signup, navigate to LoginPage
       // navigation.navigate('LoginPage');
+
+      updateProfile(user, { displayName: username })
+        .then(() => {
+          console.log("Profile updated successfully");
+        })
+        .catch((error) => {
+          Alert.alert("Profile Update Error", error.message);
+        });
 
       // Send email verification
       sendEmailVerification(user)

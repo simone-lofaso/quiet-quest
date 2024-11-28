@@ -21,6 +21,7 @@ import VerificationEmailPage from "./src/pages/verification";
 import ForgotPasswordPage from "./src/pages/forgotpassword";
 import { Alert } from "react-native";
 import { PreferenceProvider } from "./src/services/usePreferences";
+import editProfile from "./src/pages/editProfile";
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -117,6 +118,7 @@ export default function App() {
           <Stack.Screen name="MapPage" component={MapPage} />
           <Stack.Screen name="VerificationEmailPage" component={VerificationEmailPage} />
           <Stack.Screen name="ForgotPasswordPage" component={ForgotPasswordPage} />
+          <Stack.Screen name="editProfile" component={editProfile} />
         </Stack.Navigator>
       </NavigationContainer>
     </PreferenceProvider>
