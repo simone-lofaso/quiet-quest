@@ -6,7 +6,7 @@ import { Ionicons } from '@expo/vector-icons';
 import { useFocusEffect } from '@react-navigation/native';
 import GoalsList from '../components/goalslist';
 
-export default function HomePage() {
+export default function HomePage({ navigation }) {
   return (
     <View style={styles.container}>
       <Text style={styles.homeText}>How are you feeling today? Retake Quiz Below!</Text>
