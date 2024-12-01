@@ -45,9 +45,7 @@ export default function ProfilePage({ navigation }) {
       <TouchableOpacity style={styles.logoutButton} onPress={handleLogout}>
         <Text style={styles.logoutButtonText}>Logout</Text>
       </TouchableOpacity>
-      <TouchableOpacity style={styles.quizButton} onPress={() => navigation.navigate("InterestPage")}>
-        <Text style={styles.quizButtonText}>Quiz</Text>
-      </TouchableOpacity>
+      
       <TouchableOpacity 
         style={styles.editButton}
         onPress={() => navigation.navigate('editProfile')}  // Navigate to EditProfile
