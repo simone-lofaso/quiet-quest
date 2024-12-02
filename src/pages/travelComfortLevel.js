@@ -2,6 +2,7 @@
 import { getAuth } from 'firebase/auth';
 import { doc, getDocFromServer, getFirestore, setDoc } from 'firebase/firestore';
 import React, { useState } from 'react';
+import { Ionicons } from '@expo/vector-icons';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { usePreferencesContext } from '../services/usePreferences';
 
@@ -33,6 +34,12 @@ export default function TravelComfortScreen({navigation}) {
   }
   return (
     <View style={styles.container}>
+      <TouchableOpacity 
+            style={styles.backButton}
+            onPress={() => navigation.goBack()}
+        >
+        <Ionicons name="arrow-back" size={24} color="black" />
+      </TouchableOpacity>
       <Text style={styles.title}>Comfort Level when Traveling</Text>
 
       <View style={styles.optionsContainer}>
@@ -88,6 +95,11 @@ const styles = StyleSheet.create({
     backgroundColor: '#FDF0D1',
     paddingHorizontal: 20,
     paddingVertical: 30,
+  },
+
+  backButton: {
+    marginTop: 50,
+    marginBottom: 20,
   },
 
   title: {

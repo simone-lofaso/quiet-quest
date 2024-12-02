@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import Emoji from 'react-native-emoji';
+import { Ionicons } from '@expo/vector-icons';
 import { usePreferencesContext } from '../services/usePreferences';
 
 const MoodCrowdedPage = ({ navigation }) => {
@@ -23,6 +24,12 @@ const MoodCrowdedPage = ({ navigation }) => {
 
     return (
         <View style={styles.container}>
+        <TouchableOpacity 
+            style={styles.backButton}
+            onPress={() => navigation.goBack()}
+        >
+        <Ionicons name="arrow-back" size={24} color="black" />
+        </TouchableOpacity>
             <Text style={styles.header}>Mood in Crowded Place</Text>
             <View style={styles.moodGrid}>
                 {moods.map((mood) => (
@@ -76,6 +83,12 @@ const styles = StyleSheet.create({
         paddingHorizontal: 20,
         paddingVertical: 30,
     },
+
+    backButton: {
+        marginTop: 50,
+        marginBottom: 20,
+      },
+    
 
     header: {
         fontSize: 28,

@@ -30,6 +30,13 @@ export default function InterestsScreen({navigation}) {
 
   return (
     <View style={styles.container}>
+      <TouchableOpacity 
+        style={styles.backButton}
+        onPress={() => navigation.goBack()}
+      >
+        <Ionicons name="arrow-back" size={24} color="black" />
+      </TouchableOpacity>
+
       <Text style={styles.title}>Pick Your Interests</Text>
       <View style={styles.interestsContainer}>
         {interests.map((item, index) => (
@@ -83,6 +90,11 @@ const styles = StyleSheet.create({
     backgroundColor: '#FDF0D1', // Matches app theme
     paddingHorizontal: 20,
     paddingVertical: 30,
+  },
+
+  backButton: {
+    marginTop: 50,
+    marginBottom: 20,
   },
 
   title: {
