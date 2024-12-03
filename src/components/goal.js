@@ -15,36 +15,38 @@ const Goal = (props) =>{
 }
 
 const styles = StyleSheet.create({
-    goalContainer:{
-        flexDirection:'row',
-        alignItems:'center',
-        justifyContent:'center',
-        padding:20,
+    goalContainer: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      justifyContent: 'flex-start',
+      padding: 15,
+      marginVertical: 5,
+      backgroundColor: 'rgba(233, 168, 120, 0.25)',
+      borderRadius: 10,
+      shadowColor: '#000',
+      shadowOffset: { width: 0, height: 2 },
+      shadowOpacity: 0.1,
+      shadowRadius: 5,
     },
-    itemLeft:{
-        flexDirection:'row',
-        alignItems:'center',
-        flexWrap:'wrap',
+
+    itemLeft: {
+      flexDirection: 'row',
+      alignItems: 'center',
     },
-    square:{
-        width:24,
-        height:24,
-        backgroundColor:'#CCDAFD',
-        opacity:0.8,
-        borderRadius:6,
-        marginRight:15,
+
+    square: {
+      width: 20,
+      height: 20,
+      backgroundColor: '#CEE6F3',
+      borderRadius: 5,
+      marginRight: 10,
     },
-    itemText:{
-        maxWidth:'100%',
+
+    itemText: {
+      fontSize: 16,
+      fontWeight: '500',
+      color: '#6C3428',
     },
-    /*
-    circular:{
-        width:12,
-        height:12,
-        borderColor:'#55BCF6',
-        borderWidth:2,
-        borderRadius:5,
-    },*/
 });
 
 export default Goal;

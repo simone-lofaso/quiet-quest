@@ -40,7 +40,8 @@ export default function StartPage({ navigation }) {
     logo: {
       width: 250, 
       height: 250,
-      marginBottom: 100,
+      marginBottom: 70,
+      marginTop: -50,
     },
 
     logoContainer: {
