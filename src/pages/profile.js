@@ -73,9 +73,7 @@ export default function ProfilePage({ navigation }) {
       <TouchableOpacity style={styles.logoutButton} onPress={handleLogout}>
         <Text style={styles.logoutButtonText}>Logout</Text>
       </TouchableOpacity>
-      {/* <TouchableOpacity style={styles.quizButton} onPress={() => navigation.navigate('InterestPage')}>
-        <Text style={styles.quizButtonText}>Quiz</Text>
-      </TouchableOpacity> */}
+
 
       {/* Modal for selecting profile image */}
       <Modal visible={isModalVisible} animationType="slide" transparent={true}>
@@ -158,23 +156,6 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     fontFamily: 'SF Pro Text',
   },
-
-  // quizButton: {
-  //   backgroundColor: '#CEE6F3',
-  //   padding: 15,
-  //   borderRadius: 15,
-  //   marginBottom: 20,
-  //   width: '40%',
-  //   alignSelf: 'center',
-  //   alignItems: 'center',
-  // },
-
-  // quizButtonText: {
-  //   color: '#6C3428',
-  //   fontSize: 18,
-  //   fontWeight: 'bold',
-  //   fontFamily: 'SF Pro Text',
-  // },
 
   modalContainer: {
     flex: 1,
