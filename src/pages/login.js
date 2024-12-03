@@ -51,10 +51,6 @@ export default function LoginPage({ navigation }) {
 
     return (
         <View style={styles.container}> 
-            <View style={styles.logoContainer}>
-                <Text style={styles.logoText}>Quiet Quest</Text>
-            </View>
-
             {/* Clickable Logo Image */}
             <TouchableOpacity onPress={() => navigation.navigate('StartPage')}>
                 <Image 
@@ -131,6 +127,7 @@ const styles = StyleSheet.create({
     logo: {
         width: 150, 
         height: 150,
+        marginBottom: 30,
     },
     
     logoText: {

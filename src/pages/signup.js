@@ -77,10 +77,6 @@ export default function SignupPage({ navigation }) {
 
   return (
     <ScrollView contentContainerStyle={styles.contentContainerStyle}>
-      <View style={styles.logoContainer}>
-        <Text style={styles.logoText}>Quiet Quest</Text>
-      </View>
-
       {/* Logo Image */}
       <TouchableOpacity onPress={() => navigation.navigate('StartPage')}>
         <Image 
@@ -176,6 +172,7 @@ const styles = StyleSheet.create({
   logo: {
     width: 150, 
     height: 150,
+    marginBottom: 20,
   },
 
   logoText: {
