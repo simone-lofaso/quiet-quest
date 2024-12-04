@@ -23,10 +23,8 @@ export default function GoalsList() {
     return (
       <View style={styles.container}>
         <ScrollView
-        contentContainerStyle={{
-            flexGrow:1,
-        }}
-        keyboardShouldPersistTaps='handled'
+          contentContainerStyle={{flexGrow:1,}}
+          keyboardShouldPersistTaps='handled'
         >
 
             {/*TODAYS GOALS*/}
@@ -44,7 +42,6 @@ export default function GoalsList() {
 
                 </View>
             </View>
-
         </ScrollView>
 
         {/*WRITE GOAL*/}
@@ -63,56 +60,64 @@ export default function GoalsList() {
       </View>
     );
   }
-  
+
   const styles = StyleSheet.create({
     container: {
       flex: 1,
-      justifyContent: 'center',
-      alignItems: 'center',
+      width: '100%',
+      backgroundColor: '#FDF0D1',
+      borderRadius: 20,
     },
-    goalWrapper:{
-      justifyContent: 'center',
-      alignItems: 'center',
-      paddingTop: 20,
+
+    goalWrapper: {
       paddingHorizontal: 20,
-    }, 
-    sectionTitle: {
-        justifyContent: 'center',
-        alignItems: 'center',
-        fontSize: 24,
-        color: '#6C3428',
-        fontWeight: 'bold',
+      paddingTop: 20,
+      paddingBottom: 100,
     },
-    item: {
+
+    sectionTitle: {
+      fontSize: 24,
+      fontWeight: 'bold',
+      color: '#6C3428',
+      textAlign: 'center',
+      marginBottom: 10,
+    },
+    goalListed: {
       marginTop: 10,
     },
     writeGoalWrapper: {
       position: 'absolute',
-      flexDirection:'row',
-      justifyContent:'space-around',
-      alignItems:'center',
-      marginTop:50,
+      bottom: 20,
+      flexDirection: 'row',
+      justifyContent: 'space-around',
+      alignItems: 'center',
+      width: '100%',
+      paddingHorizontal: 20,
     },
-    input:{
-      paddingVertical:10,
-      paddingHorizontal:10,
-      backgroundColor:'#fff',
-      borderRadius:20,
-      borderColor:'#CCDAFD',
-      borderWidth:2,
-      width:250,
+    input: {
+      flex: 1,
+      backgroundColor: '#fff',
+      borderRadius: 20,
+      borderColor: '#6C3428',
+      borderWidth: 1,
+      padding: 10,
+      marginRight: 10,
     },
-    addWrapper:{
-        width:30,
-        height:30,
-        backgroundColor:'#CCDAFD',
-        borderRadius:30,
-        justifyContent:'center',
-        alignItems:'center',
-        borderColor:'#6C3428',
-        borderWidth:1,
+    addWrapper: {
+      width: 40,
+      height: 40,
+      backgroundColor: '#CEE6F3',
+      borderRadius: 20,
+      justifyContent: 'center',
+      alignItems: 'center',
+      borderColor: '#6C3428',
+      borderWidth: 2,
     },
-    addText:{},
+    addText: {
+      fontSize: 18,
+      color: '#6C3428',
+      fontWeight: 'bold',
+    },
   });
   
   

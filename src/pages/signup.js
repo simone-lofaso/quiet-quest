@@ -1,4 +1,6 @@
 import { createUserWithEmailAndPassword, sendEmailVerification } from "firebase/auth";
+import { setDoc, doc } from "firebase/firestore";
+import { db } from "../config/firebase";
 import React, { useState } from "react";
 import {
   View,
@@ -23,7 +25,7 @@ export default function SignupPage({ navigation }) {
   const [confirmPassword, setConfirmPassword] = useState("");
   const [isConfirmPasswordVisible, setIsConfirmPasswordVisible] = useState(false);
 
-  const handleSignup = () => {
+  const handleSignup = async () => {
     if (!username || !email || !password || !confirmPassword) {
       Alert.alert("Please fill all fields");
       return;
@@ -45,35 +47,24 @@ export default function SignupPage({ navigation }) {
       return;
   }
 
-  createUserWithEmailAndPassword(auth, email, password)
-    .then((userCredential) => {
-      const user = userCredential.user;
-      // Alert.alert("Successfully Signup!", `Welcome ${username}`);
-      // After successful signup, navigate to LoginPage
-      // navigation.navigate('LoginPage');
+  try {
+    const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+    const user = userCredential.user;
 
-      updateProfile(user, { displayName: username })
-        .then(() => {
-          console.log("Profile updated successfully");
-        })
-        .catch((error) => {
-          Alert.alert("Profile Update Error", error.message);
-        });
+    await updateProfile(user, { displayName: username })
+    await sendEmailVerification(user);
 
-      // Send email verification
-      sendEmailVerification(user)
-      .then(() => {
-        Alert.alert(
-          "Signup Successful!",
-        );
-        // Navigate to VerificationEmailPage
-        navigation.navigate('VerificationEmailPage');
-      })
-      .catch((error) => {
-        Alert.alert("Verification Email Error", error.message);
-      });
-    })
-    .catch((error) => {
+    //Add the user data to Firestore with the `isNewUser` flag
+    await setDoc(doc(db, "users", user.uid), {
+      username, 
+      email, 
+      isNewUser: true,
+    });
+
+    Alert.alert("Signup Successful!", "Please verify your email.");
+    // Navigate to VerificationEmailPage
+    navigation.navigate('VerificationEmailPage');
+  } catch(error) {
       if(error.code === 'auth/invalid-email') {
         Alert.alert("Signup Error", "Invalid email format!");
       } else if(error.code === 'auth/email-already-in-use') {
@@ -81,15 +72,11 @@ export default function SignupPage({ navigation }) {
       } else {
         Alert.alert("Signup Error!", error.message);
       }
-    });
+    }
   };
 
   return (
     <ScrollView contentContainerStyle={styles.contentContainerStyle}>
-      <View style={styles.logoContainer}>
-        <Text style={styles.logoText}>Quiet Quest</Text>
-      </View>
-
       {/* Logo Image */}
       <TouchableOpacity onPress={() => navigation.navigate('StartPage')}>
         <Image 
@@ -183,8 +170,9 @@ const styles = StyleSheet.create({
   },
 
   logo: {
-    width: 150, 
-    height: 150,
+    width: 180, 
+    height: 180,
+    marginBottom: 10,
   },
 
   logoText: {

@@ -4,10 +4,6 @@ import { View, Text, Image, StyleSheet, TouchableOpacity } from 'react-native';
 export default function StartPage({ navigation }) {
     return (
       <View style={styles.container}>
-        <View style={styles.logoContainer}>
-          <Text style={styles.logoText}>Quiet Quest</Text>
-        </View>
-
         {/* Logo Image */}
         <Image 
           source={require('../../assets/logo.png')} 
@@ -44,7 +40,8 @@ export default function StartPage({ navigation }) {
     logo: {
       width: 250, 
       height: 250,
-      marginBottom: 60,
+      marginBottom: 70,
+      marginTop: -50,
     },
 
     logoContainer: {

@@ -33,16 +33,12 @@ export default function ForgotPasswordPage({ navigation }) {
 
   return (
     <View style={styles.container}>
-        <View style={styles.logoContainer}>
-                <Text style={styles.logoText}>Quiet Quest</Text>
-            </View>
-
-            {/* Logo Image */}
-            <Image 
+        {/* Logo Image */}
+          <Image 
             source={require('../../assets/logo.png')} 
             style={styles.logo}
             resizeMode="contain"
-            />
+          />
         {/* Form Section */}
         <View style={styles.formContainer}>
             <Text style={styles.title}>Forgot Your Password?</Text>
@@ -81,9 +77,9 @@ const styles = StyleSheet.create({
   },
 
   logo: {
-    width: 150, 
-    height: 150,
-    marginBottom: 50,
+    width: 180, 
+    height: 180,
+    marginBottom: 40,
   },
 
   logoText: {

@@ -1,57 +1,56 @@
 import React, {useState} from "react";
 import { Alert, TouchableOpacity } from "react-native";
 import { View, StyleSheet, TextInput, Text, Image } from "react-native";
-import { auth } from "../config/firebase";
+import { auth, db } from "../config/firebase";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { Ionicons } from "@expo/vector-icons";
+import { doc, getDoc } from "firebase/firestore";
 
 export default function LoginPage({ navigation }) {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [isPasswordVisible, setIsPasswordVisible] = useState(false);
 
-    const handleLogin = () => {
-        signInWithEmailAndPassword(auth, email, password)
-            .then((userCredential) => {
-                const user = userCredential.user;
-                // Alert.alert("Successfully Login!", `Welcome back, ${user.email}`);
-                // navigation.navigate('HomePage');
+    const handleLogin = async () => {
+        try {
+            const userCredential = await signInWithEmailAndPassword(auth, email, password);
+            const user = userCredential.user;
+    
+            if (user.emailVerified) {
+                // Fetch user data from firestore
+                const userDoc = await getDoc(doc(db, "users", user.uid));
 
-                // Check if email is verified
-                if (user.emailVerified) {
-                    Alert.alert("Successfully Login!");
-                    navigation.navigate("HomePage");
-                } else {
-                Alert.alert(
-                    "Email Verification Required",
-                    "Please verify your email before logging in."
-                );
+                if (userDoc.exists()) {
+                    const userData = userDoc.data();
+                    if(userData.isNewUser) {
+                        //Redirect to the first quiz page
+                        navigation.navigate("InterestPage");
+                    } else {
+                        navigation.navigate("HomePage");
+                    }
                 }
-            })
-            .catch((error) => {
-                console.log('Error Code:', error.code);  
-                if(error.code === 'auth/invalid-email') {
-                    Alert.alert("Login Error", "Please enter email address!");
-                } else if (error.code === 'auth/missing-password') {
-                    Alert.alert("Login Error", "Please enter your password!");
-                } else if(error.code === 'auth/user-not-found') {
-                    Alert.alert("Login Error", "Invalid email address!");
-                } else if (error.code === 'auth/wrong-password') {
-                    Alert.alert("Login Error", "Incorrect password!");
-                } else if (error.code === 'auth/too-many-requests') {
-                    Alert.alert("Login Error", "Too many attempts. Please try again later!");
-                } else {
-                    Alert.alert("Login Failed!", error.message);  
+            } else {
+                    Alert.alert( "Email Verification Required", "Please verify your email before logging in.");
+            } 
+        } catch (error) {
+                    if(error.code === 'auth/invalid-email') {
+                        Alert.alert("Login Error", "Please enter email address!");
+                    } else if (error.code === 'auth/missing-password') {
+                        Alert.alert("Login Error", "Please enter your password!");
+                    } else if(error.code === 'auth/user-not-found') {
+                        Alert.alert("Login Error", "Invalid email address!");
+                    } else if (error.code === 'auth/wrong-password') {
+                        Alert.alert("Login Error", "Incorrect password!");
+                    } else if (error.code === 'auth/too-many-requests') {
+                        Alert.alert("Login Error", "Too many attempts. Please try again later!");
+                    } else {
+                        Alert.alert("Login Failed!", error.message);  
+                    }
                 }
-            });
     };
 
     return (
         <View style={styles.container}> 
-            <View style={styles.logoContainer}>
-                <Text style={styles.logoText}>Quiet Quest</Text>
-            </View>
-
             {/* Clickable Logo Image */}
             <TouchableOpacity onPress={() => navigation.navigate('StartPage')}>
                 <Image 
@@ -126,8 +125,9 @@ const styles = StyleSheet.create({
       },
     
     logo: {
-        width: 150, 
-        height: 150,
+        width: 200, 
+        height: 200,
+        marginBottom: 20,
     },
     
     logoText: {

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, Alert, Image, FlatList, Modal } from 'react-native';
-import { signOut } from 'firebase/auth';
+import { deleteUser, signOut } from 'firebase/auth';
 import { auth, firestore } from '../config/firebase';
 import { Ionicons } from '@expo/vector-icons';
 import { useFocusEffect } from '@react-navigation/native';
@@ -53,6 +53,37 @@ export default function ProfilePage({ navigation }) {
       });
   };
 
+  const handleDeleteAccount = () => {
+    Alert.alert (
+      "Delete Account", "Are you sure you want to delete your account? This action cannot be undone.",
+      [
+        {
+          text: "Cancel",
+          style: "cancel",
+        },
+        {
+          text: "Delete",
+          style: "destructive",
+          onPress: () => {
+            const user = auth.currentUser;
+            if(user) {
+              deleteUser(user) .then(() => {
+                Alert.alert("Your account has been deleted.")
+                navigation.reset({
+                  index: 0,
+                  routes: [{name: 'LoginPage' }]
+                })
+              })
+              .catch((error) => {
+                Alert.alert("Error", error.message)
+              });
+            }
+          },
+         }
+      ]
+    );
+  };
+
   return (
     <View style={styles.container}>
       {/* Profile Image */}
@@ -70,12 +101,15 @@ export default function ProfilePage({ navigation }) {
       >
         <Text style={styles.editButtonText}>Edit</Text>
       </TouchableOpacity>
+
       <TouchableOpacity style={styles.logoutButton} onPress={handleLogout}>
         <Text style={styles.logoutButtonText}>Logout</Text>
       </TouchableOpacity>
-      {/* <TouchableOpacity style={styles.quizButton} onPress={() => navigation.navigate('InterestPage')}>
-        <Text style={styles.quizButtonText}>Quiz</Text>
-      </TouchableOpacity> */}
+
+      <TouchableOpacity style={styles.deleteButton} onPress={handleDeleteAccount}>
+        <Text style={styles.deleteButtonText}>Delete Account</Text>
+      </TouchableOpacity>
+
 
       {/* Modal for selecting profile image */}
       <Modal visible={isModalVisible} animationType="slide" transparent={true}>
@@ -159,22 +193,22 @@ const styles = StyleSheet.create({
     fontFamily: 'SF Pro Text',
   },
 
-  // quizButton: {
-  //   backgroundColor: '#CEE6F3',
-  //   padding: 15,
-  //   borderRadius: 15,
-  //   marginBottom: 20,
-  //   width: '40%',
-  //   alignSelf: 'center',
-  //   alignItems: 'center',
-  // },
+  deleteButton: {
+    backgroundColor: '#CEE6F3',
+    padding: 15,
+    borderRadius: 15,
+    marginBottom: 20,
+    width: '40%',
+    alignSelf: 'center',
+    alignItems: 'center',
+  },
 
-  // quizButtonText: {
-  //   color: '#6C3428',
-  //   fontSize: 18,
-  //   fontWeight: 'bold',
-  //   fontFamily: 'SF Pro Text',
-  // },
+  deleteButtonText: {
+    color: '#EF4B4B',
+    fontSize: 18,
+    fontWeight: 'bold',
+    fontFamily: 'SF Pro Text',
+  },
 
   modalContainer: {
     flex: 1,
@@ -216,119 +250,4 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
   },
 });
-
-//   return (
-//     <View style={styles.container}>
-//       {/* Display Username */}
-//       <View style={styles.usernameContainer}>
-//         <Text style={styles.usernameText}>{username}</Text>
-//       </View>
-//       <TouchableOpacity 
-//         style={styles.editButton}
-//         onPress={() => navigation.navigate('editProfile')}  // Navigate to EditProfile
-//         >
-//          <Text style={styles.editButtonText}>Edit</Text>
-//       </TouchableOpacity>
-//       <TouchableOpacity style={styles.logoutButton} onPress={handleLogout}>
-//         <Text style={styles.logoutButtonText}>Logout</Text>
-//       </TouchableOpacity>
-//       <TouchableOpacity style={styles.quizButton} onPress={() => navigation.navigate("InterestPage")}>
-//         <Text style={styles.quizButtonText}>Quiz</Text>
-//       </TouchableOpacity>
-      
-
-
-//     </View>
-//   );
-// }
-
-// const styles = StyleSheet.create({
-//   container: {
-//     flex: 1,
-//     justifyContent: 'center',
-//     alignItems: "center",
-//     backgroundColor: "#FDF0D1",
-//     paddingVertical: 20,
-//   },
-
-//   welcomeText: {
-//     fontSize: 24,
-//     fontWeight: 'bold',
-//     color: '#6C3428',
-//     fontFamily: 'SF Pro Text',
-//     marginBottom: 30,
-//   },
-
-//   logoutButton: {
-//     backgroundColor: '#CEE6F3',
-//     padding: 15,
-//     borderRadius: 15,
-//     marginTop: 20,
-//     marginBottom: 20,
-//     width: '40%',
-//     alignSelf: 'center',
-//     alignItems: 'center',
-//   },
-
-//   logoutButtonText: {
-//     color: '#6C3428',
-//     fontSize: 18,
-//     fontWeight: 'bold',
-//     fontFamily: 'SF Pro Text',
-//   },
-
-//   quizButton: {
-//     backgroundColor: '#CEE6F3',
-//     padding: 15,
-//     borderRadius: 15,
-//     marginTop: 20,
-//     marginBottom: 20,
-//     width: '40%',
-//     alignSelf: 'center',
-//     alignItems: 'center',
-//   },
-
-//   quizButtonText: {
-//     color: '#6C3428',
-//     fontSize: 18,
-//     fontWeight: 'bold',
-//     fontFamily: 'SF Pro Text',
-//   },
-
-//   editButton: {
-//     backgroundColor: '#CEE6F3',
-//     padding: 15,
-//     borderRadius: 15,
-//     marginTop: 20,
-//     marginBottom: 20,
-//     width: '40%',
-//     alignSelf: 'center',
-//     alignItems: 'center',
-//   },
-
-//   editButtonText: {
-//     color: '#6C3428',
-//     fontSize: 18,
-//     fontWeight: 'bold',
-//     fontFamily: 'SF Pro Text',
-//   },
-
-//   usernameContainer: {
-//     position: 'absolute',
-//     top: 150, // Adjust positioning for the top of the page
-//     alignSelf: 'center',
-//     paddingHorizontal: 20,
-//     paddingVertical: 10,
-//     borderRadius: 10,
-//     zIndex: 10,
-//   },
-
-//   usernameText: {
-//     fontSize: 40,
-//     fontWeight: 'bold',
-//     color: '#6C3428',
-//     fontFamily: 'SF Pro Text',
-//     marginBottom: 30,
-//   },
-// });
 

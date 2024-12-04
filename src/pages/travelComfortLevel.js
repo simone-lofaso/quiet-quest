@@ -26,7 +26,12 @@ export default function TravelComfortScreen({navigation}) {
     try {
       const { uid } = auth.currentUser;
       const user = await getDocFromServer(doc(instance, `users/${uid}`))
-      await setDoc(doc(instance, `users/${uid}`), {...user.data, ...preferences, selectedOption})
+      await setDoc(doc(instance, `users/${uid}`), {
+        ...user.data, 
+        ...preferences, 
+        selectedOption,
+        isNewUser: false, // Mark as not a new user
+      })
       setPreferences({})
     } catch (e) {
       console.error(e)

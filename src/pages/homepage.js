@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, TouchableOpacity, StyleSheet, Alert } from 'react-native';
+import { View, Text, TouchableOpacity, StyleSheet, Alert, Image } from 'react-native';
 import { signOut } from 'firebase/auth';
 import { auth } from '../config/firebase';
 import { Ionicons } from '@expo/vector-icons';
@@ -9,15 +9,19 @@ import GoalsList from '../components/goalslist';
 export default function HomePage({ navigation }) {
   return (
     <View style={styles.container}>
-      <Text style={styles.homeText}>How are you feeling today? Retake Quiz Below!</Text>
-      {/*QUIZ*/}
-      <TouchableOpacity style={styles.quizButton} onPress={() => navigation.navigate("InterestPage")}>
-        <Text style={styles.quizButtonText}>Quiz</Text>
-      </TouchableOpacity>
+      <View style={styles.card}>
+        <Text style={styles.homeText}>How are you feeling today?</Text>
+        <Text style={styles.homeText2}>Retake Quiz Below!</Text>
+
+        {/*QUIZ*/}
+        <TouchableOpacity style={styles.quizButton} onPress={() => navigation.navigate("InterestPage")}>
+          <Text style={styles.quizButtonText}>Quiz</Text>
+        </TouchableOpacity>
+      </View>
 
       {/*GOAL CONTAINER*/}
       <View style={styles.goalContainer}>
-      <GoalsList/>
+        <GoalsList/>
       </View>
     </View>
   );
@@ -28,21 +32,45 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#FDF0D1',
+    backgroundColor: '#FDF0D1', 
+    padding: 20,
   },
-  homeText:{
-    justifyContent: 'center',
-    alignItems: 'center',
-    padding: 15,
+
+  card: {
+    width: '100%',
+    padding: 20,
+    backgroundColor: 'rgba(233, 168, 120, 0.25)',
+    borderRadius: 20,
+    marginTop: 50,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 5 },
+    shadowOpacity: 0.1,
+    shadowRadius: 10,
+  },
+
+  homeText: {
     fontSize: 24,
     color: '#6C3428',
     fontWeight: 'bold',
-  }, 
+    textAlign: 'center',
+    marginTop: 10,
+    marginBottom: 10,
+  },
+
+  homeText2: {
+    fontSize: 18,
+    color: '#6C3428',
+    fontWeight: '500',
+    textAlign: 'center',
+    marginBottom: 20,
+  },
+
   text: {
     fontSize: 24,
     color: '#6C3428',
     fontWeight: 'bold',
   },
+
   quizButton: {
     backgroundColor: '#CEE6F3',
     padding: 15,
@@ -53,20 +81,21 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     alignItems: 'center',
   },
+
   goalContainer:{
-    width: '80%',
-    height:'40%',
-    alignItems:'center',
-    padding:10,
-    marginBottom:20,
-    backgroundColor:'#FBDF9D',
+    width: '95%',
+    height:'55%',
+    padding: 10,
+    backgroundColor: 'rgba(233, 168, 120, 0.25)',
+    borderRadius: 20,
+    marginTop: 40,
   },
+
   quizButtonText: {
     color: '#6C3428',
     fontSize: 18,
     fontWeight: 'bold',
     fontFamily: 'SF Pro Text',
   },
-  
 });
 
