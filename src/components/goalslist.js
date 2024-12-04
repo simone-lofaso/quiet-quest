@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, KeyboardAvoidingView, TextInput, Keyboard, ScrollView, Platform } from 'react-native';
 import Goal from '../components/goal';
 
+//credit: https://www.youtube.com/watch?v=0kL6nhutjQ8
 export default function GoalsList() {
 
     const [goal, setGoal] = useState();

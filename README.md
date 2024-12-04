@@ -66,3 +66,7 @@ git push
 5. Ensure all team members have pulled the most recent code in main, or else it can result in errors.
 
 6. Create new branch you want to work on with the new updated main.
+
+## Logo Inspiration:
+
+- Gained inspiration from [Pillow Lab](https://www.vistaprint.com/logomaker/ideas/pillow-logos)

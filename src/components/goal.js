@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 
-
+//credit: https://www.youtube.com/watch?v=0kL6nhutjQ8
 const Goal = (props) =>{
     return(
         <View style={styles.goalContainer}>
