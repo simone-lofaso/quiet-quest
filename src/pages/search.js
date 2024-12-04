@@ -1,9 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { View, Text, StyleSheet, SafeAreaView, TextInput, FlatList, ActivityIndicator, TouchableOpacity, Image } from 'react-native';
 import { firebaseConfig } from '../config/firebase';
-import { useFirebaseAuth } from '../services/useFirebaseAuth';
 import { SearchBar } from 'react-native-screens';
-import { MaterialIcons } from '@expo/vector-icons';
+import { Ionicons } from "@expo/vector-icons";
 
 
 const GEOAPIFY_API_KEY = '9ae4bc67fc5a46a59a0bc17736ef8433';
@@ -12,17 +11,17 @@ const SearchPage = () => {
   const [query, setQuery] = useState('');
   const [places, setPlaces] = useState([]);
   const [loading, setLoading] = useState(false);
-  const {user} = useFirebaseAuth();
 
   const searchPlaces = async() => {
     if(!query.trim()){
-      alert("Please enter a search term.");
+      alert("Please enter a category to search.");
       return;
     }
     setLoading(true);
 
     try{
-      console.log(query)
+      console.log(query);
+      //API takes in different categories from San Jose, CA and provides the different searches to the user
       const url = `https://api.geoapify.com/v2/places?categories=entertainment,commercial.supermarket,commercial.marketplace,commercial.shopping_mall,commercial.department_store,commercial.outdoor_and_sport,commercial.hobby,commercial.books,commercial.gift_and_souvenir,commercial.stationery,commercial.clothing,commercial.bag,commercial.garden,commercial.art,commercial.antiques,commercial.video_and_music,commercial.toy_and_game,catering.restaurant,catering.fast_food,catering.cafe,catering.food_court,catering.bar,catering.ice_cream,education.library,entertainment.culture,entertainment.cinema,entertainment.aquarium,entertainment.miniature_golf,entertainment.bowling_alley,entertainment.theme_park,sport.ice_rink,activity,tourism.information,tourism.attraction,tourism.sights,tourism,catering,entertainment.escape_game,entertainment.museum,entertainment,leisure.park,national_park&filter=rect:-121.9484641932776,37.38092259456819,-121.83271780672268,37.29138979589054&limit=20&name=${query}&apiKey=${GEOAPIFY_API_KEY}`;
       
       const response = await fetch(url);
@@ -49,16 +48,19 @@ const SearchPage = () => {
   return(
     <View style={styles.container}>
       <Text style={styles.header}>Search Places in San Jose</Text>
-      {user && <Text style={styles.greeting}>Welcome, {user.displayName || "User"}! </Text>}
-      {/*<MaterialIcons name="search" style={styles.searchIcon} size={24} color="#433"/>*/}
+
+      {/*SEARCH TEXT INPUT AND ICON*/}
+      <View style={styles.searchContainer}>
       <TextInput 
         style={styles.input}
-        placeholder='Search for Places...'
+        placeholder='Search a Category...'
         value={query}
         onChangeText={setQuery}
         onSubmitEditing={searchPlaces}/>
+        <Ionicons name="search" style={styles.searchIcon} size={24} color="#gray"/>
+        </View>
         {loading ? (
-          <ActivityIndicator animating={true} size="large"/>
+          <ActivityIndicator style={styles.activity} animating={true} size="large"/>
         ):(
           <FlatList
           data={places}
@@ -73,6 +75,7 @@ const SearchPage = () => {
           )}
           contentContainerStyle={styles.list}
           />
+          
         )}
     </View>
   );
@@ -83,6 +86,8 @@ const styles = StyleSheet.create({
     flex: 1,
     padding:50,
     backgroundColor: '#FDF0D1',
+    alignItems:'center',
+    justifyContent:'center',
   },
   header:{
     fontSize:32,
@@ -92,23 +97,30 @@ const styles = StyleSheet.create({
     color: '#5F8194',
     fontWeight:"bold",
     marginBottom:16,
+    fontFamily: 'SF Pro Text',
   },
-  greeting:{
-    fontSizw:16,
-    color:'#5F8194',
-    marginBottom:8,
+  searchContainer:{
+    flexDirection:"row",
+    alignItems:"center",
+    borderRadius:10,
+    padding:10,
+    marginHorizontal:20,
+    marginVertical:10,
   },
   input:{
-    height:50,
+    height:55,
+    flex:1,
     backgroundColor:'#fff',
     borderRadius:8,
-    paddingHorizontal: 16,
-    marginBottom: 16,
+    paddingRight:50,
+    paddingHorizontal: 40,
     borderWidth:1,
     borderColor:'#ccc',
   },
   searchIcon:{
-    marginRight:0,
+    position:"absolute",
+    left: 20,
+    color:'#ccc',
   },
   list:{
     paddingBottom:16,
@@ -139,6 +151,9 @@ const styles = StyleSheet.create({
     fontSize: 24,
     color: '#6C3428',
     fontWeight: 'bold',
+  },
+  activity:{
+    color: '#5F8194',
   },
 });
 
