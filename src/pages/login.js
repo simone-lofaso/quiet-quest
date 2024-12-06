@@ -118,23 +118,11 @@ const styles = StyleSheet.create({
         backgroundColor: "#FDF0D1",
         paddingVertical: 20,
     },
-
-    logoContainer: {
-        alignItems: "center",
-        marginBottom: 10,
-      },
     
     logo: {
         width: 200, 
         height: 200,
         marginBottom: 20,
-    },
-    
-    logoText: {
-        fontSize: 30,
-        color: '#6C3428',
-        fontFamily: 'SF Pro Text', 
-        fontWeight: 'bold'
     },
 
     formContainer: {

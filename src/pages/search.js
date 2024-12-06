@@ -47,36 +47,42 @@ const SearchPage = () => {
 
   return(
     <View style={styles.container}>
-      <Text style={styles.header}>Search Places in San Jose</Text>
+      <View style={styles.fixedHeader}>
+        <Text style={styles.header}>Search Places in San Jose</Text>
 
       {/*SEARCH TEXT INPUT AND ICON*/}
       <View style={styles.searchContainer}>
-      <TextInput 
-        style={styles.input}
-        placeholder='Search a Category...'
-        value={query}
-        onChangeText={setQuery}
-        onSubmitEditing={searchPlaces}/>
-        <Ionicons name="search" style={styles.searchIcon} size={24} color="#gray"/>
+        <TextInput 
+          style={styles.input}
+          placeholder='Search a Category...'
+          value={query}
+          onChangeText={setQuery}
+          onSubmitEditing={searchPlaces}/>
+          <Ionicons name="search" style={styles.searchIcon} size={24} color="#gray"/>
         </View>
+      </View>
+
+      {/* Result List */}
+      <View style={styles.resultsContainer}>
         {loading ? (
           <ActivityIndicator style={styles.activity} animating={true} size="large"/>
         ):(
           <FlatList
-          data={places}
-          keyExtractor={(item) => item.properties.place_id || item.properties.name}
-          renderItem={({item}) => (
-            <View style={styles.placeItem}>
-              <Text style ={styles.placeText}>{item.properties.name || "Unnamed Place"}</Text>
-              <Text style={styles.placeCategory}>Categories: {item.properties.categories?.join(", ")}</Text>
-              <Text style={styles.placeLocation}>{item.properties.address_line1}, {item.properties.city}</Text>
+            data={places}
+            keyExtractor={(item) => item.properties.place_id || item.properties.name}
+            renderItem={({item}) => (
+              <View style={styles.placeItem}>
+                <Text style ={styles.placeText}>{item.properties.name || "Unnamed Place"}</Text>
+                <Text style={styles.placeCategory}>Categories: {item.properties.categories?.join(", ")}</Text>
+                <Text style={styles.placeLocation}>{item.properties.address_line1}, {item.properties.city}</Text>
 
-            </View> 
-          )}
-          contentContainerStyle={styles.list}
-          />
-          
+              </View> 
+            )}
+            contentContainerStyle={styles.list}
+            showsVerticalScrollIndicator={false} // Optional: hide scroll bar
+          /> 
         )}
+      </View>
     </View>
   );
 };
@@ -84,75 +90,95 @@ const SearchPage = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    padding:50,
     backgroundColor: '#FDF0D1',
-    alignItems:'center',
-    justifyContent:'center',
   },
+
+  fixedHeader: {
+    backgroundColor: '#FDF0D1',
+    marginTop: 15,
+    marginBottom: 1,
+    paddingVertical: 20,
+    paddingHorizontal: 16,
+    borderBottomWidth: 1,
+    borderColor: '#FDF0D1',
+
+  },
+
   header:{
-    fontSize:32,
+    fontSize:30,
     textAlign: 'center',
-    alignItems:'center',
-    justifyContent:'center',
-    color: '#5F8194',
+    color: '#6C3428',
     fontWeight:"bold",
     marginBottom:16,
+    marginTop:70,
     fontFamily: 'SF Pro Text',
   },
-  searchContainer:{
-    flexDirection:"row",
-    alignItems:"center",
-    borderRadius:10,
-    padding:10,
-    marginHorizontal:20,
-    marginVertical:10,
+
+  searchContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: 'rgba(233, 168, 120, 0.25)',
+    borderRadius: 15,
+    borderWidth: 1,
+    marginTop: 10,
+    // borderColor: '#6C3428',
+    borderColor: 'transparent',
+    paddingHorizontal: 10,
+    paddingVertical: 5,
   },
-  input:{
-    height:55,
-    flex:1,
-    backgroundColor:'#fff',
-    borderRadius:8,
-    paddingRight:50,
-    paddingHorizontal: 40,
-    borderWidth:1,
-    borderColor:'#ccc',
+
+  input: {
+    flex: 1,
+    height: 40,
+    fontSize: 16,
+    paddingLeft: 10,
+    color: 'black',
   },
-  searchIcon:{
-    position:"absolute",
-    left: 20,
-    color:'#ccc',
+
+  searchIcon: {
+    color: '#6C3428',
   },
-  list:{
-    paddingBottom:16,
+
+  resultsContainer: {
+    flex: 1,
+    paddingHorizontal: 25,
+    paddingTop: 10,
   },
-  placeItem:{
-    padding:16,
-    backgroundColor:'#FDF0D1',
-    borderRadius:8,
-    marginBottom:8,
-    borderWidth:1,
-    borderColor:'#6C3428',
+
+  list: {
+    paddingBottom: 16,
   },
-  placeText:{
+
+  placeItem: {
+    padding: 16,
+    borderRadius: 15,
+    marginBottom: 10,
+    borderWidth: 1.5,
+    paddingHorizontal: 20,
+    borderColor: '#BA704F',
+    elevation: 3,
+  },
+
+  placeText: {
     fontSize: 18,
-    fontWeight:"bold",
-    color: '#6C3428',
-  },
-  placeLocation:{
-    fontSize: 14,
-    fontWeight:"bold",
-    color: '#6C3428',
-  },
-  placeCategory:{
-    fontSize:14,
-    color:'#BA704F',
-  },
-  text: {
-    fontSize: 24,
-    color: '#6C3428',
     fontWeight: 'bold',
+    color: 'black',
+    marginBottom: 4,
   },
-  activity:{
+
+  placeCategory: {
+    fontSize: 14,
+    color: '#BA704F',
+    marginBottom: 4,
+  },
+
+  placeLocation: {
+    fontSize: 14,
+    color: '#6C3428',
+  },
+
+  activity: {
+    marginTop: 20,
     color: '#5F8194',
   },
 });

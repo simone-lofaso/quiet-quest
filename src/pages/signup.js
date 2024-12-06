@@ -164,22 +164,10 @@ const styles = StyleSheet.create({
     paddingVertical: 20,
   },
 
-  logoContainer: {
-    alignItems: "center",
-    marginBottom: 10,
-  },
-
   logo: {
     width: 180, 
     height: 180,
     marginBottom: 10,
-  },
-
-  logoText: {
-    fontSize: 30,
-    color: '#6C3428',
-    fontFamily: 'SF Pro Text', 
-    fontWeight: 'bold'
   },
 
   formContainer: {

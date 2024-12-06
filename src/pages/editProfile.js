@@ -62,6 +62,7 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#FDF0D1',
   },
+  
   header: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -70,9 +71,11 @@ const styles = StyleSheet.create({
     backgroundColor: '#FAEBCD',
     paddingBottom: 10,
   },
+
   backButton: {
     marginRight: 5,
   },
+
   title: {
     fontSize: 20,
     fontWeight: 'bold',
@@ -85,11 +88,13 @@ const styles = StyleSheet.create({
     marginHorizontal: 20,
     marginTop: 30,
   },
+
   label: {
     fontSize: 16,
     color: '#6C3428',
     marginBottom: 5,
   },
+
   input: {
     height: 40,
     borderBottomWidth: 1,
@@ -97,17 +102,20 @@ const styles = StyleSheet.create({
     marginBottom: 20,
     fontSize: 16,
   },
+
   saveButton: {
-    backgroundColor: '#6C4A4A',
-    padding: 15,
-    borderRadius: 15,
-    marginTop: 20,
+    marginTop: 25,
     marginHorizontal: 20,
     alignItems: 'center',
+    backgroundColor: '#CEE6F3',
+    paddingVertical: 15,
+    paddingHorizontal: 40,
+    borderRadius: 20,
   },
+
   saveButtonText: {
-    color: '#FFF',
-    fontSize: 16,
+    fontSize: 18,
     fontWeight: 'bold',
+    color: 'black',     
   },
 });

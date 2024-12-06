@@ -1,15 +1,42 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, Alert, Image, FlatList, Modal } from 'react-native';
 import { deleteUser, signOut } from 'firebase/auth';
-import { auth, firestore } from '../config/firebase';
-import { Ionicons } from '@expo/vector-icons';
+import { auth, db, firestore } from '../config/firebase';
+import { usePreferencesContext } from '../services/usePreferences';
 import { useFocusEffect } from '@react-navigation/native';
-
+import { Ionicons } from "@expo/vector-icons";
+import { doc, getDoc, setDoc } from 'firebase/firestore';
 
 export default function ProfilePage({ navigation }) {
   const [username, setUsername] = useState("");
   const [profileImage, setProfileImage] = useState(require('../../assets/default-profile.png'))
   const [isModalVisible, setIsModalVisible] = useState(false);
+  const [interests, setInterests] = React.useState(preferences?.selectedInterests || []);
+  const { preferences } = usePreferencesContext();
+
+  useEffect(() => {
+    if (preferences?.selectedInterests) {
+      setInterests(preferences.selectedInterests);
+    } else {
+      const fetchPreferencesFromFirebase = async () => {
+        const user = auth.currentUser;
+        if (user) {
+          try {
+            const userDocRef = doc(db, "users", user.uid);
+            const docSnap = await getDoc(userDocRef);
+            if (docSnap.exists()) {
+              const data = docSnap.data();
+              setInterests(data.preferences?.selectedInterests || []);
+            }
+          } catch (error) {
+            console.error("Error fetching preferences from Firebase:", error);
+          }
+        }
+      };
+  
+      fetchPreferencesFromFirebase();
+    }
+  }, [preferences]);
 
   // Predefined profile images
   const predefinedImages = [
@@ -25,6 +52,33 @@ export default function ProfilePage({ navigation }) {
     setIsModalVisible(false);
     Alert.alert('Profile Updated', 'Your profile image has been updated.');
   };
+
+  
+  // Fetch the user's display name when the component mounts
+  useFocusEffect(React.useCallback(() => {
+    const fetchProfileImage = async () => {
+      const user = auth.currentUser;
+      if (user) {
+        const userDocRef = doc(db, "users", user.uid);
+        try {
+          const docSnap = await getDoc(userDocRef);
+          if (docSnap.exists()) {
+            const data = docSnap.data();
+            if (data.profileImage) {
+              setProfileImage({ uri: data.profileImage });
+            }
+          }
+        } catch (error) {
+          console.error("Error fetching profile image:", error);
+        }
+      } else {
+        setUsername("Guest");
+      } 
+    };
+
+    fetchProfileImage();
+  }, [])
+);
 
   // Fetch the user's display name when the component mounts
   useFocusEffect(React.useCallback(() => {
@@ -89,10 +143,35 @@ export default function ProfilePage({ navigation }) {
       {/* Profile Image */}
       <TouchableOpacity onPress={() => setIsModalVisible(true)}>
         <Image source={profileImage} style={styles.profileImage} />
-      </TouchableOpacity>
+        {/* Edit Button */}
+        <TouchableOpacity style={styles.editProfileButton} onPress={() => console.log('Edit Profile')}>
+            <Ionicons name="pencil" size={20} color="#6C3428" />
+          </TouchableOpacity>
+        </TouchableOpacity>
 
       {/* Username */}
       <Text style={styles.usernameText}>{username}</Text>
+
+      {interests.length > 0 ? (
+        <View style={styles.interestsContainer}>
+          <FlatList
+            data={interests}
+            keyExtractor={(item, index) => `${item}-${index}`}
+            numColumns={2} // Display items in two columns
+            contentContainerStyle={{
+              alignItems: 'center', // Center items vertically
+              justifyContent: 'center', // Center items horizontally
+            }}
+            renderItem={({ item }) => (
+            <View style={styles.interestItem}>
+              <Text style={styles.interestText}>{item}</Text>
+            </View>
+            )}
+          />
+        </View>
+      ) : (
+        <Text style={styles.noInterestsText}>No interests selected yet.</Text>
+      )}
 
       {/* Buttons */}
       <TouchableOpacity
@@ -156,7 +235,6 @@ const styles = StyleSheet.create({
     fontSize: 24,
     fontWeight: 'bold',
     color: '#6C3428',
-    marginBottom: 100,
   },
 
   editButton: {
@@ -167,6 +245,18 @@ const styles = StyleSheet.create({
     width: '40%',
     alignSelf: 'center',
     alignItems: 'center',
+  },
+  
+  editProfileButton: {
+    position: 'absolute',
+    right: 2, // Adjust the position to appear at the top-right of the image
+    top: 5,   // Adjust the position to appear at the top-right of the image
+    backgroundColor: '#FDF0D1',
+    borderRadius: 20,
+    padding: 5,
+    borderWidth: 1,
+    borderColor: '#6C3428',
+    elevation: 3,
   },
 
   editButtonText: {
@@ -249,5 +339,42 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: 'bold',
   },
+
+  interestsContainer: {
+    width: '100%', 
+    display: 'flex',
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    justifyContent: 'center', 
+    alignSelf: 'center', 
+    marginTop: 15, 
+    marginBottom: 70, 
+  },
+
+  interestItem: {
+    display: 'flex',
+    alignItems: 'center', 
+    justifyContent: 'center',
+    backgroundColor: '#D5A572', 
+    paddingVertical: 10, 
+    paddingHorizontal: 15, 
+    borderRadius: 17, 
+    margin: 5,
+  },
+  
+  interestText: {
+    fontSize: 13,
+    color: 'black', 
+    fontWeight: 'bold',
+  },
+
+  noInterestsText: {
+    fontSize: 16,
+    color: 'black',
+    fontWeight: 'bold',
+    fontStyle: 'italic',
+    marginTop: 20,
+    marginBottom: 70,
+  },  
 });
 

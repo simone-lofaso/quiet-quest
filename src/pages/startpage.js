@@ -14,7 +14,7 @@ export default function StartPage({ navigation }) {
         {/* Buttons */}
         <View style={styles.buttonContainer}>
             {/* Guest Mode Button */}
-            <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('HomePage', {isGuest: true, initialRouteName: 'Map' })}>
+            <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('HomePage', {isGuest: true, initialRouteName: 'Search' })}>
               <Text style={styles.buttonText}>Guest</Text>
             </TouchableOpacity>
             <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('SignupPage')}>
@@ -42,18 +42,6 @@ export default function StartPage({ navigation }) {
       height: 250,
       marginBottom: 70,
       marginTop: -50,
-    },
-
-    logoContainer: {
-      alignItems: 'center',
-      marginBottom: 0,
-    },
-
-    logoText: {
-      fontSize: 36,
-      color: '#6C3428',
-      fontFamily: 'SF Pro Text', 
-      fontWeight: 'bold'
     },
 
     buttonContainer: {
