@@ -143,11 +143,14 @@ export default function ProfilePage({ navigation }) {
       {/* Profile Image */}
       <TouchableOpacity onPress={() => setIsModalVisible(true)}>
         <Image source={profileImage} style={styles.profileImage} />
-        {/* Edit Button */}
-        <TouchableOpacity style={styles.editProfileButton} onPress={() => console.log('Edit Profile')}>
-            <Ionicons name="pencil" size={20} color="#6C3428" />
-          </TouchableOpacity>
-        </TouchableOpacity>
+          {/* Edit Icon */}
+          <Ionicons 
+            name="pencil" 
+            size={20} 
+            color="#6C3428" 
+            style={styles.editProfileIcon} 
+          />
+      </TouchableOpacity>
 
       {/* Username */}
       <Text style={styles.usernameText}>{username}</Text>
@@ -247,7 +250,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   
-  editProfileButton: {
+  editProfileIcon: {
     position: 'absolute',
     right: 2, // Adjust the position to appear at the top-right of the image
     top: 5,   // Adjust the position to appear at the top-right of the image
