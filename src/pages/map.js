@@ -1,12 +1,33 @@
-import React, { useState } from 'react';
-import { View, StyleSheet } from 'react-native';
-import MapView, { Marker } from 'react-native-maps';
+import React, { useEffect, useState } from 'react';
+import { View, StyleSheet, Button, Text } from 'react-native';
+import MapView, { Marker, Callout} from 'react-native-maps';
 import { auth } from '../config/firebase';
-import { doc, getDocFromServer, getFirestore, collection, getDocs } from 'firebase/firestore';
-import { useFocusEffect } from '@react-navigation/native';
+import { doc, getDocFromServer, getFirestore, collection, getDocs, firestore, addDoc} from 'firebase/firestore';
+import { useFocusEffect, useNavigation } from '@react-navigation/native';
+import { Ionicons } from "@expo/vector-icons";
+import { db } from '../config/firebase';
 
-export default function MapPage() {
+
+export default function MapPage({}) {
     const [locationsOfInterest, setLocationsOfInterest] = useState([]);
+    const navigation = useNavigation();
+    
+    //saving recommendations
+    const saveMarker = async (marker) =>{
+      try{
+        await addDoc(collection(db, "savedMarkers"),{
+          index:item.index,
+          title:item.title,
+          description:item.description,
+        });
+        alert("Marker saved!");
+        navigation.navigate("BookmarkPage");
+      }
+      catch(error){
+        console.error("Error saving recommendation:", error);
+      }
+    };
+
 
     const fetchRecommendations = async () => {
     try {
@@ -64,6 +85,7 @@ export default function MapPage() {
       fetchRecommendations();
     }, [])
   );
+  
 
   return (
     <View style={styles.container}>
@@ -76,13 +98,28 @@ export default function MapPage() {
           longitudeDelta: 0.04,
         }}
       >
-        {locationsOfInterest.map((item, index) => (
+        {locationsOfInterest.map((item, index, marker) => (
           <Marker
-            key={index}
-            coordinate={item.location}
-            title={item.title}
-            description={item.description}
-          />
+          key={index}
+          coordinate={item.location}
+          >
+          <Callout>
+            <View style={styles.callout} 
+            >
+              <Text style={styles.title}>{item.title}</Text>
+              <Text style={styles.description}>{item.description}</Text>
+              <Button style={styles.saveButton} title="Save Recommendation" onPress={() => saveMarker(marker)}/>
+            </View>
+          </Callout>
+          
+          {/*<Ionicons 
+          name="bookmark-outline" 
+          size={20} 
+          color ="#6C3428" 
+          style={styles.savedBookmarkIcon} 
+          onPress={() => navigation.navigate('BookmarkPage')}
+        />*/}
+          </Marker>
         ))}
       </MapView>
     </View>
@@ -99,5 +136,19 @@ const styles = StyleSheet.create({
   map: {
     width: '100%',
     height: '100%',
+  },
+  callout:{
+    width:200,
+  },
+  title:{
+    fontWeight:"bold",
+    marginBottom:5,
+  },
+  description:{
+    marginBottom:5,
+  },
+  saveButton:{
+    justifyContent:'center',
+    borderRadius:5,
   },
 });
