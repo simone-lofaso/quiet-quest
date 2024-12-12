@@ -116,6 +116,7 @@ export default function App() {
           <Stack.Screen name="MoodCrowdedPage" component={MoodCrowdedPage} />
           <Stack.Screen name="TravelComfortPage" component={TravelComfortScreen} />
           <Stack.Screen name="MapPage" component={MapPage} />
+          <Stack.Screen name="BookmarkPage" component={BookmarkPage} />
           <Stack.Screen name="VerificationEmailPage" component={VerificationEmailPage} />
           <Stack.Screen name="ForgotPasswordPage" component={ForgotPasswordPage} />
           <Stack.Screen name="editProfile" component={editProfile} />
