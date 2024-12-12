@@ -1,30 +1,63 @@
 import React, { useEffect, useState } from 'react';
-import { View, StyleSheet, Button, Text } from 'react-native';
+import { View, StyleSheet, Text, Alert, TouchableOpacity } from 'react-native';
 import MapView, { Marker, Callout} from 'react-native-maps';
 import { auth } from '../config/firebase';
 import { doc, getDocFromServer, getFirestore, collection, getDocs, firestore, addDoc} from 'firebase/firestore';
 import { useFocusEffect, useNavigation } from '@react-navigation/native';
-import { Ionicons } from "@expo/vector-icons";
+//import { Ionicons } from "@expo/vector-icons";
 import { db } from '../config/firebase';
+//npx expo install @react-native-async-storage/async-storage
+import {AsyncStorage} from 'react-native';
 
 
 export default function MapPage({}) {
     const [locationsOfInterest, setLocationsOfInterest] = useState([]);
     const navigation = useNavigation();
+
+    const [savedItem, setSavedItem] = useState([]);
     
-    //saving recommendations
-    const saveMarker = async (marker) =>{
+    {/*//saving recommendations
+    const handleSaveRecommendation = async () =>{
       try{
         await addDoc(collection(db, "savedMarkers"),{
           index:item.index,
           title:item.title,
           description:item.description,
         });
-        alert("Marker saved!");
+        Alert.alert("Marker saved!");
         navigation.navigate("BookmarkPage");
       }
       catch(error){
         console.error("Error saving recommendation:", error);
+      }
+    };*/}
+
+    const loadSavedItems = async () => {
+      try{
+        const storedSavedItems = await AsyncStorage.getItem('savedItem');
+        if(storedSavedItems){
+          setSavedItem(JSON.parse(storedSavedItems));
+        }
+      }
+      catch(error){
+        console.error('Error loading saved item:', error);
+      }
+    };
+
+    const toggleSavedItem = async (itemId) => {
+      const updatedSavedItems = savedItem.map((item) => {
+        if(item.id === itemId){
+          return{...item, isFavorite: !item.isFavorite };
+        }
+        return item;
+      });
+      setSavedItem(updatedSavedItems);
+
+      try{
+        await AsyncStorage.setItem('favorites', JSON.stringify(updatedSavedItems));
+      }
+      catch(error){
+        console.error('Error saving recommended item:', error);
       }
     };
 
@@ -98,17 +131,23 @@ export default function MapPage({}) {
           longitudeDelta: 0.04,
         }}
       >
-        {locationsOfInterest.map((item, index, marker) => (
+        <View style={styles.calloutContainer}>
+        {locationsOfInterest.map((item, index) => (
           <Marker
           key={index}
           coordinate={item.location}
           >
-          <Callout>
+          <Callout tooltip={false}>
             <View style={styles.callout} 
             >
               <Text style={styles.title}>{item.title}</Text>
               <Text style={styles.description}>{item.description}</Text>
-              <Button style={styles.saveButton} title="Save Recommendation" onPress={() => saveMarker(marker)}/>
+              <TouchableOpacity style={styles.saveButton} onPress={() => {
+                handleSaveRecommendation;
+                navigation.navigate('BookmarkPage');
+                }}>
+              <Text style={styles.saveButtonText}>Save Recommendation</Text>
+              </TouchableOpacity>
             </View>
           </Callout>
           
@@ -120,7 +159,9 @@ export default function MapPage({}) {
           onPress={() => navigation.navigate('BookmarkPage')}
         />*/}
           </Marker>
+          
         ))}
+        </View>
       </MapView>
     </View>
   );
@@ -139,16 +180,37 @@ const styles = StyleSheet.create({
   },
   callout:{
     width:200,
+    justifyContent:"center",
+    alignItems:"center",
   },
   title:{
     fontWeight:"bold",
     marginBottom:5,
+    marginTop: 5,
+    justifyContent:"center",
+    alignItems:"center",
   },
   description:{
     marginBottom:5,
+    justifyContent:"center",
+    alignItems:"center",
   },
   saveButton:{
     justifyContent:'center',
-    borderRadius:5,
+    alignContent:"center",
+    backgroundColor: "#CEE6F3",
+    padding:10,
+    borderRadius:10,
+  },
+  saveButtonText:{
+    justifyContent:"center",
+    alignItems:"center",
+    color:"#6C3428",
+    fontWeight:"bold",
+    padding:2,
+  },
+  calloutContainer:{
+    width:"20%",
+    height:"20%",
   },
 });

@@ -2,9 +2,14 @@ import React, { useEffect, useState } from 'react';
 import { View, Text, StyleSheet, FlatList } from 'react-native';
 import {collection, getDocs} from 'firebase/firestore';
 import { db } from '../config/firebase';
+import MapPage from './map';
 
 export default function BookmarkPage() {
   const [savedRecommendations, setSavedRecommendations] = useState([]);
+
+  useEffect(() =>{
+    loadSavedItems();
+  }, []);
 
   useEffect(() =>{
     const fetchSavedRecommendations = async () => {
@@ -25,7 +30,7 @@ export default function BookmarkPage() {
       <Text style={styles.header}>Saved Recommendations</Text>
       <FlatList
       data={savedRecommendations}
-      keyExtractor={(item) => item.id}
+      keyExtractor={(item) => item.index}
       renderItem={({item}) =>(
         <View style={styles.item}>
           <Text style={styles.locationText}>{item.location}</Text>
@@ -44,6 +49,13 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: '#FDF0D1',
+  },
+  header:{
+    justifyContent:"center",
+    alignItems:"center",
+    color:"#6C3428",
+    fontWeight:"bold",
+    fontSize:24,
   },
   locationText: {
     fontSize: 24,
