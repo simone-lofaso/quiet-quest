@@ -58,9 +58,9 @@ export default function BookmarkPage() {
 
   //deletes recommendation off of the saved recommendations page
   const deleteBookmark = async (bookmarkId) => {
-    console.log(recId);
+    console.log(bookmarkId);
     await deleteDoc(doc(db, "bookmarks", bookmarkId));
-    fetchBookmarks();
+    await fetchBookmarks();
   };
 
   const renderItem = ({ item }) => (
