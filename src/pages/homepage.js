@@ -18,6 +18,7 @@ export default function HomePage({ navigation }) {
     <View style={styles.container}>
       <View style={styles.card}>
         <Text style={styles.homeText}>How are you feeling today?</Text>
+        {/*RETAKE QUIZ SECTION*/}
         <Text style={styles.homeText2}>Retake Quiz Below!</Text>
 
         {/*QUIZ*/}

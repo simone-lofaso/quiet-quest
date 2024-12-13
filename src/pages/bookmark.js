@@ -31,7 +31,7 @@ export default function BookmarkPage() {
 
       const uid = user.uid;
 
-      //create a query to fetch documents where userId equals uid
+      //query is created to fetch documents where userId = uid
       const bookmarksRef = collection(db, "bookmarks");
       const q = query(bookmarksRef, where("userId", "==", uid));
 

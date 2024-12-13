@@ -1,21 +1,21 @@
-import React, { useState } from 'react';
-import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
-import Emoji from 'react-native-emoji';
-import { Ionicons } from '@expo/vector-icons';
-import { usePreferencesContext } from '../services/usePreferences';
+import React, { useState } from "react";
+import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import Emoji from "react-native-emoji";
+import { Ionicons } from "@expo/vector-icons";
+import { usePreferencesContext } from "../services/usePreferences";
 
-const MoodQuietPlaces = ({navigation}) => {
+const MoodQuietPlaces = ({ navigation }) => {
   const [selectedMoodId, setSelectedMoodId] = useState();
   const { preferences, setPreferences } = usePreferencesContext();
 
   // List of moods with emojis
   const moods = [
-    { id: 1, label: 'Happy', emoji: 'smiley' },
-    { id: 2, label: 'Excited', emoji: 'heart_eyes' },
-    { id: 3, label: 'Neutral', emoji: 'neutral_face' },
-    { id: 4, label: 'Sad', emoji: 'sob' },
-    { id: 5, label: 'Confused', emoji: 'confused' },
-    { id: 6, label: 'Anxious', emoji: 'fearful' },
+    { id: 1, label: "Happy", emoji: "smiley" },
+    { id: 2, label: "Excited", emoji: "heart_eyes" },
+    { id: 3, label: "Neutral", emoji: "neutral_face" },
+    { id: 4, label: "Sad", emoji: "sob" },
+    { id: 5, label: "Confused", emoji: "confused" },
+    { id: 6, label: "Anxious", emoji: "fearful" },
   ];
 
   const handleSelectMood = (moodId) => {
@@ -24,7 +24,7 @@ const MoodQuietPlaces = ({navigation}) => {
 
   return (
     <View style={styles.container}>
-      <TouchableOpacity 
+      <TouchableOpacity
         style={styles.backButton}
         onPress={() => navigation.goBack()}
       >
@@ -46,8 +46,8 @@ const MoodQuietPlaces = ({navigation}) => {
             {/* <Text style={styles.moodLabel}>{mood.label}</Text> */}
             <Text
               style={[
-              styles.moodLabel,
-              selectedMoodId === mood.id && styles.selectedMoodLabel, 
+                styles.moodLabel,
+                selectedMoodId === mood.id && styles.selectedMoodLabel,
               ]}
             >
               {mood.label}
@@ -56,19 +56,20 @@ const MoodQuietPlaces = ({navigation}) => {
         ))}
       </View>
       <View style={styles.buttonContainer}>
+        {/*SKIP BUTTON*/}
         <TouchableOpacity
           style={[styles.navButton, styles.skipButton]}
-          onPress={() => navigation.navigate('MoodCrowdedPage')}
+          onPress={() => navigation.navigate("MoodCrowdedPage")}
         >
           <Text style={styles.navButtonText}>Skip</Text>
         </TouchableOpacity>
-        <TouchableOpacity 
-        style={styles.nextButton} 
-        onPress={() => {
-          setPreferences({ ...preferences, selectedMoodId });
-          navigation.navigate('MoodCrowdedPage')
-        }
-        }
+        {/*NEXT QUIZ BUTTON*/}
+        <TouchableOpacity
+          style={styles.nextButton}
+          onPress={() => {
+            setPreferences({ ...preferences, selectedMoodId });
+            navigation.navigate("MoodCrowdedPage");
+          }}
         >
           <Text style={styles.navButtonText}>Next</Text>
         </TouchableOpacity>
@@ -80,7 +81,7 @@ const MoodQuietPlaces = ({navigation}) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#FDF0D1', // Matches app theme
+    backgroundColor: "#FDF0D1", // Matches app theme
     paddingHorizontal: 20,
     paddingVertical: 30,
   },
@@ -90,38 +91,37 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
 
-
   header: {
     fontSize: 28,
-    fontWeight: 'bold',
-    color: '#6C3428', // Darker brown for consistency
+    fontWeight: "bold",
+    color: "#6C3428", // Darker brown for consistency
     marginTop: 90,
     marginBottom: 20,
-    textAlign: 'center',
+    textAlign: "center",
   },
 
   moodGrid: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    justifyContent: 'space-between',
+    flexDirection: "row",
+    flexWrap: "wrap",
+    justifyContent: "space-between",
     marginTop: 20,
   },
 
   moodButton: {
-    width: '30%',
-    backgroundColor: '#DFA878', // Beige button color
+    width: "30%",
+    backgroundColor: "#DFA878", // Beige button color
     paddingVertical: 20,
     borderRadius: 20,
-    alignItems: 'center',
+    alignItems: "center",
     marginVertical: 10,
-    shadowColor: '#000', // Subtle shadow for elevation
+    shadowColor: "#000", // Subtle shadow for elevation
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.1,
     shadowRadius: 5,
   },
 
   moodButtonSelected: {
-    backgroundColor: '#BA704F', // Dark brown for selected button
+    backgroundColor: "#BA704F", // Dark brown for selected button
   },
 
   emoji: {
@@ -131,35 +131,35 @@ const styles = StyleSheet.create({
 
   moodLabel: {
     fontSize: 16,
-    fontWeight: 'bold',
-    color: 'black', // Dark brown for unselected text
+    fontWeight: "bold",
+    color: "black", // Dark brown for unselected text
   },
 
   selectedMoodLabel: {
-    color: 'white', 
+    color: "white",
   },
 
   buttonContainer: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
+    flexDirection: "row",
+    justifyContent: "space-between",
     marginTop: 50,
   },
 
   navButton: {
     paddingVertical: 15,
     borderRadius: 10,
-    alignItems: 'center',
+    alignItems: "center",
   },
 
   skipButton: {
-    backgroundColor: '#CEE6F3',
+    backgroundColor: "#CEE6F3",
     paddingVertical: 15,
     paddingHorizontal: 40,
     borderRadius: 20,
   },
 
   nextButton: {
-    backgroundColor: '#CEE6F3',
+    backgroundColor: "#CEE6F3",
     paddingVertical: 15,
     paddingHorizontal: 40,
     borderRadius: 20,
@@ -167,8 +167,8 @@ const styles = StyleSheet.create({
 
   navButtonText: {
     fontSize: 18,
-    fontWeight: 'bold',
-    color: 'black',
+    fontWeight: "bold",
+    color: "black",
   },
 });
 

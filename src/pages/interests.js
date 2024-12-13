@@ -19,6 +19,7 @@ export default function InterestsScreen({ navigation }) {
     { name: "Snowboarding", icon: "snow" },
   ];
 
+  //select users interest in quiz
   const toggleInterest = (interest) => {
     console.log(`interest ${interest}`);
     if (selectedInterests.includes(interest)) {
@@ -65,12 +66,15 @@ export default function InterestsScreen({ navigation }) {
       </View>
 
       <View style={styles.footer}>
+        {/*SKIP BUTTON*/}
         <TouchableOpacity
           style={[styles.navButton, styles.skipButton]}
           onPress={() => navigation.navigate("MoodQuietPage")}
         >
           <Text style={styles.navButtonText}>Skip</Text>
         </TouchableOpacity>
+
+        {/*NEXT QUIZ BUTTON*/}
         <TouchableOpacity
           style={styles.nextButton}
           onPress={() => {

@@ -1,17 +1,30 @@
-import React, { useState, useEffect, useCallback } from 'react';
-import { View, Text, TouchableOpacity, StyleSheet, Alert, Image, FlatList, Modal } from 'react-native';
-import { deleteUser, signOut } from 'firebase/auth';
-import { auth, db, firestore } from '../config/firebase';
-import { usePreferencesContext } from '../services/usePreferences';
-import { useFocusEffect } from '@react-navigation/native';
+import React, { useState, useEffect, useCallback } from "react";
+import {
+  View,
+  Text,
+  TouchableOpacity,
+  StyleSheet,
+  Alert,
+  Image,
+  FlatList,
+  Modal,
+} from "react-native";
+import { deleteUser, signOut } from "firebase/auth";
+import { auth, db, firestore } from "../config/firebase";
+import { usePreferencesContext } from "../services/usePreferences";
+import { useFocusEffect } from "@react-navigation/native";
 import { Ionicons } from "@expo/vector-icons";
-import { doc, getDoc, setDoc } from 'firebase/firestore';
+import { doc, getDoc, setDoc } from "firebase/firestore";
 
 export default function ProfilePage({ navigation }) {
   const [username, setUsername] = useState("");
-  const [profileImage, setProfileImage] = useState(require('../../assets/default-profile.png'))
+  const [profileImage, setProfileImage] = useState(
+    require("../../assets/default-profile.png")
+  );
   const [isModalVisible, setIsModalVisible] = useState(false);
-  const [interests, setInterests] = React.useState(preferences?.selectedInterests || []);
+  const [interests, setInterests] = React.useState(
+    preferences?.selectedInterests || []
+  );
   const { preferences } = usePreferencesContext();
 
   useEffect(() => {
@@ -33,64 +46,65 @@ export default function ProfilePage({ navigation }) {
           }
         }
       };
-  
+
       fetchPreferencesFromFirebase();
     }
   }, [preferences]);
 
   // Predefined profile images
   const predefinedImages = [
-    require('../../assets/profile1.png'),
-    require('../../assets/profile2.png'),
-    require('../../assets/profile3.png'),
-    require('../../assets/profile4.png'),
+    require("../../assets/profile1.png"),
+    require("../../assets/profile2.png"),
+    require("../../assets/profile3.png"),
+    require("../../assets/profile4.png"),
   ];
 
   // Handle selecting a profile image
   const selectProfileImage = (image) => {
     setProfileImage(image);
     setIsModalVisible(false);
-    Alert.alert('Profile Updated', 'Your profile image has been updated.');
+    Alert.alert("Profile Updated", "Your profile image has been updated.");
   };
 
-  
   // Fetch the user's display name when the component mounts
-  useFocusEffect(React.useCallback(() => {
-    const fetchProfileImage = async () => {
+  useFocusEffect(
+    React.useCallback(() => {
+      const fetchProfileImage = async () => {
+        const user = auth.currentUser;
+        if (user) {
+          const userDocRef = doc(db, "users", user.uid);
+          try {
+            const docSnap = await getDoc(userDocRef);
+            if (docSnap.exists()) {
+              const data = docSnap.data();
+              if (data.profileImage) {
+                setProfileImage({ uri: data.profileImage });
+              }
+            }
+          } catch (error) {
+            console.error("Error fetching profile image:", error);
+          }
+        } else {
+          setUsername("Guest");
+        }
+      };
+
+      fetchProfileImage();
+    }, [])
+  );
+
+  // Fetch the user's display name when the component mounts
+  useFocusEffect(
+    React.useCallback(() => {
       const user = auth.currentUser;
       if (user) {
-        const userDocRef = doc(db, "users", user.uid);
-        try {
-          const docSnap = await getDoc(userDocRef);
-          if (docSnap.exists()) {
-            const data = docSnap.data();
-            if (data.profileImage) {
-              setProfileImage({ uri: data.profileImage });
-            }
-          }
-        } catch (error) {
-          console.error("Error fetching profile image:", error);
-        }
+        setUsername(user.displayName || "Guest");
       } else {
         setUsername("Guest");
-      } 
-    };
-
-    fetchProfileImage();
-  }, [])
-);
-
-  // Fetch the user's display name when the component mounts
-  useFocusEffect(React.useCallback(() => {
-    const user = auth.currentUser;
-    if (user) {
-      setUsername(user.displayName || "Guest");
-    } else {
-      setUsername("Guest");
-    }
-  }, [])
+      }
+    }, [])
   );
-  
+
   const handleLogout = () => {
     signOut(auth)
       .then(() => {
@@ -98,7 +112,7 @@ export default function ProfilePage({ navigation }) {
         // Navigate the user back to the login page
         navigation.reset({
           index: 0,
-          routes: [{ name: 'LoginPage' }],
+          routes: [{ name: "LoginPage" }],
         });
       })
       .catch((error) => {
@@ -108,8 +122,10 @@ export default function ProfilePage({ navigation }) {
   };
 
   const handleDeleteAccount = () => {
-    Alert.alert (
-      "Delete Account", "Are you sure you want to delete your account? This action cannot be undone.",
+    //confirms account deletion, once deleted user must make a new account
+    Alert.alert(
+      "Delete Account",
+      "Are you sure you want to delete your account? This action cannot be undone.",
       [
         {
           text: "Cancel",
@@ -120,20 +136,21 @@ export default function ProfilePage({ navigation }) {
           style: "destructive",
           onPress: () => {
             const user = auth.currentUser;
-            if(user) {
-              deleteUser(user) .then(() => {
-                Alert.alert("Your account has been deleted.")
-                navigation.reset({
-                  index: 0,
-                  routes: [{name: 'LoginPage' }]
+            if (user) {
+              deleteUser(user)
+                .then(() => {
+                  Alert.alert("Your account has been deleted.");
+                  navigation.reset({
+                    index: 0,
+                    routes: [{ name: "LoginPage" }],
+                  });
                 })
-              })
-              .catch((error) => {
-                Alert.alert("Error", error.message)
-              });
+                .catch((error) => {
+                  Alert.alert("Error", error.message);
+                });
             }
           },
-         }
+        },
       ]
     );
   };
@@ -143,13 +160,13 @@ export default function ProfilePage({ navigation }) {
       {/* Profile Image */}
       <TouchableOpacity onPress={() => setIsModalVisible(true)}>
         <Image source={profileImage} style={styles.profileImage} />
-          {/* Edit Icon */}
-          <Ionicons 
-            name="pencil" 
-            size={20} 
-            color="#6C3428" 
-            style={styles.editProfileIcon} 
-          />
+        {/* Edit Icon */}
+        <Ionicons
+          name="pencil"
+          size={20}
+          color="#6C3428"
+          style={styles.editProfileIcon}
+        />
       </TouchableOpacity>
 
       {/* Username */}
@@ -162,13 +179,13 @@ export default function ProfilePage({ navigation }) {
             keyExtractor={(item, index) => `${item}-${index}`}
             numColumns={2} // Display items in two columns
             contentContainerStyle={{
-              alignItems: 'center', // Center items vertically
-              justifyContent: 'center', // Center items horizontally
+              alignItems: "center", // Center items vertically
+              justifyContent: "center", // Center items horizontally
             }}
             renderItem={({ item }) => (
-            <View style={styles.interestItem}>
-              <Text style={styles.interestText}>{item}</Text>
-            </View>
+              <View style={styles.interestItem}>
+                <Text style={styles.interestText}>{item}</Text>
+              </View>
             )}
           />
         </View>
@@ -179,7 +196,7 @@ export default function ProfilePage({ navigation }) {
       {/* Buttons */}
       <TouchableOpacity
         style={styles.editButton}
-        onPress={() => navigation.navigate('editProfile')} // Navigate to EditProfile
+        onPress={() => navigation.navigate("editProfile")} // Navigate to EditProfile
       >
         <Text style={styles.editButtonText}>Edit</Text>
       </TouchableOpacity>
@@ -188,10 +205,12 @@ export default function ProfilePage({ navigation }) {
         <Text style={styles.logoutButtonText}>Logout</Text>
       </TouchableOpacity>
 
-      <TouchableOpacity style={styles.deleteButton} onPress={handleDeleteAccount}>
+      <TouchableOpacity
+        style={styles.deleteButton}
+        onPress={handleDeleteAccount}
+      >
         <Text style={styles.deleteButtonText}>Delete Account</Text>
       </TouchableOpacity>
-
 
       {/* Modal for selecting profile image */}
       <Modal visible={isModalVisible} animationType="slide" transparent={true}>
@@ -207,7 +226,10 @@ export default function ProfilePage({ navigation }) {
               </TouchableOpacity>
             )}
           />
-          <TouchableOpacity style={styles.closeButton} onPress={() => setIsModalVisible(false)}>
+          <TouchableOpacity
+            style={styles.closeButton}
+            onPress={() => setIsModalVisible(false)}
+          >
             <Text style={styles.closeButtonText}>Close</Text>
           </TouchableOpacity>
         </View>
@@ -219,9 +241,9 @@ export default function ProfilePage({ navigation }) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#FDF0D1',
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "#FDF0D1",
     paddingVertical: 20,
   },
 
@@ -231,89 +253,89 @@ const styles = StyleSheet.create({
     borderRadius: 60,
     marginBottom: 15,
     borderWidth: 2,
-    borderColor: '#6C3428', // Border color for the profile image
+    borderColor: "#6C3428", // Border color for the profile image
   },
 
   usernameText: {
     fontSize: 24,
-    fontWeight: 'bold',
-    color: '#6C3428',
+    fontWeight: "bold",
+    color: "#6C3428",
   },
 
   editButton: {
-    backgroundColor: '#CEE6F3',
+    backgroundColor: "#CEE6F3",
     padding: 15,
     borderRadius: 15,
     marginBottom: 20,
-    width: '40%',
-    alignSelf: 'center',
-    alignItems: 'center',
+    width: "40%",
+    alignSelf: "center",
+    alignItems: "center",
   },
-  
+
   editProfileIcon: {
-    position: 'absolute',
+    position: "absolute",
     right: 2, // Adjust the position to appear at the top-right of the image
-    top: 5,   // Adjust the position to appear at the top-right of the image
-    backgroundColor: '#FDF0D1',
+    top: 5, // Adjust the position to appear at the top-right of the image
+    backgroundColor: "#FDF0D1",
     borderRadius: 20,
     padding: 5,
     borderWidth: 1,
-    borderColor: '#6C3428',
+    borderColor: "#6C3428",
     elevation: 3,
   },
 
   editButtonText: {
-    color: '#6C3428',
+    color: "#6C3428",
     fontSize: 18,
-    fontWeight: 'bold',
-    fontFamily: 'SF Pro Text',
+    fontWeight: "bold",
+    fontFamily: "SF Pro Text",
   },
 
   logoutButton: {
-    backgroundColor: '#CEE6F3',
+    backgroundColor: "#CEE6F3",
     padding: 15,
     borderRadius: 15,
     marginBottom: 20,
-    width: '40%',
-    alignSelf: 'center',
-    alignItems: 'center',
+    width: "40%",
+    alignSelf: "center",
+    alignItems: "center",
   },
 
   logoutButtonText: {
-    color: '#6C3428',
+    color: "#6C3428",
     fontSize: 18,
-    fontWeight: 'bold',
-    fontFamily: 'SF Pro Text',
+    fontWeight: "bold",
+    fontFamily: "SF Pro Text",
   },
 
   deleteButton: {
-    backgroundColor: '#CEE6F3',
+    backgroundColor: "#CEE6F3",
     padding: 15,
     borderRadius: 15,
     marginBottom: 20,
-    width: '40%',
-    alignSelf: 'center',
-    alignItems: 'center',
+    width: "40%",
+    alignSelf: "center",
+    alignItems: "center",
   },
 
   deleteButtonText: {
-    color: '#EF4B4B',
+    color: "#EF4B4B",
     fontSize: 18,
-    fontWeight: 'bold',
-    fontFamily: 'SF Pro Text',
+    fontWeight: "bold",
+    fontFamily: "SF Pro Text",
   },
 
   modalContainer: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: 'rgba(0, 0, 0, 0.7)',
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "rgba(0, 0, 0, 0.7)",
   },
 
   modalTitle: {
     fontSize: 20,
-    fontWeight: 'bold',
-    color: '#FFF',
+    fontWeight: "bold",
+    color: "#FFF",
     marginBottom: 20,
     marginTop: 180,
   },
@@ -324,60 +346,59 @@ const styles = StyleSheet.create({
     borderRadius: 50,
     margin: 10,
     borderWidth: 2,
-    borderColor: '#FFF',
+    borderColor: "#FFF",
   },
 
   closeButton: {
-    backgroundColor: '#CEE6F3',
+    backgroundColor: "#CEE6F3",
     padding: 15,
     borderRadius: 15,
     marginBottom: 250,
-    width: '40%',
-    alignSelf: 'center',
-    alignItems: 'center'
+    width: "40%",
+    alignSelf: "center",
+    alignItems: "center",
   },
 
   closeButtonText: {
-    color: '#6C3428',
+    color: "#6C3428",
     fontSize: 16,
-    fontWeight: 'bold',
+    fontWeight: "bold",
   },
 
   interestsContainer: {
-    width: '100%', 
-    display: 'flex',
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    justifyContent: 'center', 
-    alignSelf: 'center', 
-    marginTop: 15, 
-    marginBottom: 70, 
+    width: "100%",
+    display: "flex",
+    flexDirection: "row",
+    flexWrap: "wrap",
+    justifyContent: "center",
+    alignSelf: "center",
+    marginTop: 15,
+    marginBottom: 70,
   },
 
   interestItem: {
-    display: 'flex',
-    alignItems: 'center', 
-    justifyContent: 'center',
-    backgroundColor: '#D5A572', 
-    paddingVertical: 10, 
-    paddingHorizontal: 15, 
-    borderRadius: 17, 
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    backgroundColor: "#D5A572",
+    paddingVertical: 10,
+    paddingHorizontal: 15,
+    borderRadius: 17,
     margin: 5,
   },
-  
+
   interestText: {
     fontSize: 13,
-    color: 'black', 
-    fontWeight: 'bold',
+    color: "black",
+    fontWeight: "bold",
   },
 
   noInterestsText: {
     fontSize: 16,
-    color: 'black',
-    fontWeight: 'bold',
-    fontStyle: 'italic',
+    color: "black",
+    fontWeight: "bold",
+    fontStyle: "italic",
     marginTop: 20,
     marginBottom: 70,
-  },  
+  },
 });
-
