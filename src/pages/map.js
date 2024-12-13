@@ -7,7 +7,6 @@ import { useFocusEffect } from '@react-navigation/native';
 
 export default function MapPage({navigation}) {
     const [locationsOfInterest, setLocationsOfInterest] = useState([]);
-
     const [modalVisible, setModalVisible] = useState(false);
     const [selectedLocationIndex, setSelectedLocationIndex] = useState();
 
@@ -117,11 +116,11 @@ export default function MapPage({navigation}) {
       onRequestClose={() => setModalVisible(false)}>
         <View style={styles.modalContainer}>
           <View style={styles.modalContent}>
-          <TouchableOpacity style={styles.button} onPress={saveRecommendation}>
-          <Text style={styles.buttonText}>Save Recommendation</Text>
+          <TouchableOpacity style={styles.saveButton} onPress={saveRecommendation}>
+          <Text style={styles.saveButtonText}>Save Recommendation</Text>
           </TouchableOpacity>
-          <TouchableOpacity style={styles.button} onPress={() => setModalVisible(false)}>
-          <Text style={styles.buttonText}>Cancel</Text>
+          <TouchableOpacity style={styles.cancelButton} onPress={() => setModalVisible(false)}>
+          <Text style={styles.cancelButtonText}>Cancel</Text>
           </TouchableOpacity>
           </View>
         </View>
@@ -137,54 +136,85 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     backgroundColor: '#FDF0D1',
   },
+
   map: {
     width: '100%',
     height: '100%',
   },
+
   calloutContainer:{
     alignItems:"center",
     padding:10,
+    backgroundColor: "rgba(255, 255, 255, 0.8)", //transparent white
+    borderRadius: 10,
   },
+  
   titleText:{
     fontWeight:'bold',
     marginBottom:5,
   },
+
   descriptionText:{
     marginBottom:5,
   },
-  button:{
-    backgroundColor:'#CEE6F3',
-    padding:10,
-    borderRadius:10,
-    marginTop:5,
+
+  saveButton:{
+    backgroundColor: '#CEE6F3',
+    padding: 13,
+    borderRadius: 10,
+    marginTop: 5,
+    alignSelf: 'center',
+    alignItems: 'center',
   },
-  buttonText:{
-    color:'#6C3428',
-    fontWeight:'bold',
+
+  saveButtonText:{
+    color: '#6C3428',
+    fontWeight: 'bold',
+    fontFamily: 'SF Pro Text',
+    fontSize: 15,
   },
+
+  cancelButton:{
+    backgroundColor: '#CEE6F3',
+    padding: 13,
+    borderRadius: 10,
+    marginTop: 20,
+    alignSelf: 'center',
+    alignItems: 'center',
+  },
+
+  cancelButtonText:{
+    color: '#6C3428',
+    fontWeight: 'bold',
+    fontFamily: 'SF Pro Text',
+    fontSize: 15,
+  },
+
   buttonNavigation:{
     backgroundColor:'#CEE6F3',
     padding:10,
     borderRadius:10,
     marginTop:5,
   },
+
   buttonNavigationText:{
     color:'#6C3428',
     fontWeight:'bold',
   },
+
   modalContainer:{
     flex:1,
     justifyContent:"center",
     alignItems:"center",
-    backgroundColor:"#fff",
-    
+    backgroundColor: "rgba(0, 0, 0, 0.5)",
   },
-  modalContent:{
-    padding:10,
-    borderRadius:10,
-    alignItems:"center",
-    height:300,
-    width:300,
-    justifyContent:"center",
+
+  modalContent: {
+    padding: 40,
+    borderRadius: 15,
+    alignItems: "center",
+    justifyContent: "center",
+    width: 350,
+    backgroundColor: "rgba(50, 50, 50, 0.9)",
   },
 });
