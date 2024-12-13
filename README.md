@@ -58,7 +58,7 @@ npm start
 - Tap on a recommendation pin and the information provided
   - A pop up should appear asking if you want to "Save Recommendation" or "Cancel"
   - If you save the recommendation you will be able to view the saved recommendation in the Bookmarks Page
-  - If you want to delte the saved recommendation from your bookmarks, click on the trash-outline button
+  - If you want to delete the saved recommendation from your bookmarks, click on the trash-outline button
 - Go back to the home page and retake the quiz
 
 ## Git Cloning Project:
@@ -78,13 +78,13 @@ If you already created a folder make sure it's labeled differently from quiet-qu
 code .
 ```
 
-4. In VS Code, open a new terminal but before typing anything into the terminal, make sure you're in the Sprout folder
+4. In VS Code, open a new terminal but before typing anything into the terminal, make sure you're in the Quiet Quest folder
 
 ```jsx
 cd quiet-quest
 ```
 
-5. once you're in the Sprout folder, in the terminal input:
+5. once you're in the Quiet Quest folder, in the terminal input:
 
 ```jsx
 npm i
