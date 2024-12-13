@@ -2,13 +2,14 @@ import React, { useState } from 'react';
 import { View, StyleSheet, Alert, Button, Text, TouchableOpacity, Modal } from 'react-native';
 import MapView, { Marker, Callout, CalloutSubview } from 'react-native-maps';
 import { auth, db } from '../config/firebase';
-import { doc, getDocFromServer, getFirestore, collection, getDocs } from 'firebase/firestore';
+import { doc, getDocFromServer, getFirestore, collection, getDocs, addDoc } from 'firebase/firestore';
 import { useFocusEffect } from '@react-navigation/native';
 
 export default function MapPage({navigation}) {
     const [locationsOfInterest, setLocationsOfInterest] = useState([]);
 
     const [modalVisible, setModalVisible] = useState(false);
+    const [selectedLocationIndex, setSelectedLocationIndex] = useState();
 
     const fetchRecommendations = async () => {
     try {
@@ -70,7 +71,9 @@ export default function MapPage({navigation}) {
   //saving recommendation from maps page
   const saveRecommendation = async () =>{
     try{
-    await db.collection('recommendations').add(locationsOfInterest);
+      console.log(locationsOfInterest)
+      //getting recommendation to save from the one recommendation instead of all
+    await addDoc(collection(db, 'recommendations'), locationsOfInterest[selectedLocationIndex]);
     Alert.alert('Location successfully saved!');
     setModalVisible(false);
     }
@@ -97,7 +100,7 @@ export default function MapPage({navigation}) {
             coordinate={item.location}
             
           >
-          <Callout onPress={() =>setModalVisible(true)}>
+          <Callout onPress={() => {setModalVisible(true); setSelectedLocationIndex(index);}}>
             <View style={styles.calloutContainer}>
             <Text style={styles.titleText}>{item.title}</Text>
             <Text style={styles.descriptionText}>{item.description}</Text>
