@@ -68,13 +68,22 @@ export default function MapPage({navigation}) {
   );
 
   //saving recommendation from maps page
-  const saveRecommendation = async () =>{
+  const saveBookmark = async () =>{
     try{
       console.log(locationsOfInterest)
+      const user = auth.currentUser;
+      if (!user) {
+          console.log("Guest mode: No user logged in");
+          return;
+      }
+
+      const uid = user.uid;
+      let newBookmark = locationsOfInterest[selectedLocationIndex];
+      newBookmark.userId = uid;
       //getting recommendation to save from the one recommendation instead of all
-    await addDoc(collection(db, 'recommendations'), locationsOfInterest[selectedLocationIndex]);
-    Alert.alert('Location successfully saved!');
-    setModalVisible(false);
+      await addDoc(collection(db, 'bookmarks'), newBookmark);
+      Alert.alert('Location successfully saved!');
+      setModalVisible(false);
     }
     catch(error){
       console.error('Error saving recommendation:', error);
@@ -116,8 +125,8 @@ export default function MapPage({navigation}) {
       onRequestClose={() => setModalVisible(false)}>
         <View style={styles.modalContainer}>
           <View style={styles.modalContent}>
-          <TouchableOpacity style={styles.saveButton} onPress={saveRecommendation}>
-          <Text style={styles.saveButtonText}>Save Recommendation</Text>
+          <TouchableOpacity style={styles.saveButton} onPress={saveBookmark}>
+          <Text style={styles.saveButtonText}>Bookmark Recommendation</Text>
           </TouchableOpacity>
           <TouchableOpacity style={styles.cancelButton} onPress={() => setModalVisible(false)}>
           <Text style={styles.cancelButtonText}>Cancel</Text>

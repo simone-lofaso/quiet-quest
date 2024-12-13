@@ -1,21 +1,34 @@
 import React, { useEffect, useState } from 'react';
 import { View, Text, StyleSheet, FlatList, TouchableOpacity } from 'react-native';
-import { db } from '../config/firebase';
-import { doc, collection, getDocs, deleteDoc} from 'firebase/firestore';
+import { db, auth} from '../config/firebase';
+import { doc, collection, query, where, getDocs, deleteDoc} from 'firebase/firestore';
 import { Ionicons } from "@expo/vector-icons";
 import { useFocusEffect } from '@react-navigation/native';
 
 export default function BookmarkPage() {
-  const [recommendations, setRecommendations] = useState([]);
+  const [bookmarks, setBookmarks] = useState([]);
 
-  const fetchRecommendations = async () =>{
+  const fetchBookmarks = async () =>{
     try{
-      const querySnapshot = await getDocs(collection(db, 'recommendations'));
-      const data = querySnapshot.docs.map(doc => ({id: doc.id, ...doc.data()}));
-      setRecommendations(data);
+      const user = auth.currentUser;
+      if (!user) {
+          console.log("Guest mode: No user logged in");
+          return;
+      }
+
+      const uid = user.uid;
+
+      //create a query to fetch documents where userId equals uid
+      const bookmarksRef = collection(db, 'bookmarks');
+      const q = query(bookmarksRef, where("userId", "==", uid));
+
+      const querySnapshot = await getDocs(q);
+      const data = querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+      
+      setBookmarks(data);
     }
     catch(error){
-      console.error('Error fetching saved recommendations:', error);
+      console.error('Error fetching saved bookmarks:', error);
     }
   };
 
@@ -24,15 +37,15 @@ export default function BookmarkPage() {
   // }, []);
   useFocusEffect(
     React.useCallback(() => {
-      fetchRecommendations();
+      fetchBookmarks();
     }, [])
   );
 
   //deletes recommendation off of the saved recommendations page
-  const deleteRecommendation = async (recId) => {
+  const deleteBookmark = async (bookmarkId) => {
     console.log(recId)
-    await deleteDoc(doc(db, 'recommendations', recId));
-    fetchRecommendations();
+    await deleteDoc(doc(db, 'bookmarks', bookmarkId));
+    fetchBookmarks();
   }
 
   const renderItem = ({item}) => (
@@ -42,7 +55,7 @@ export default function BookmarkPage() {
           <Text style={styles.description}>{item.description}</Text>
           {/* <Ionicons name="trash-outline" style={styles.deleteIcon} size={24} color='#EF4B4B' onPress={() => {deleteRecommendation(item.id)}}/> */}
       </View>
-        <TouchableOpacity onPress={() => deleteRecommendation(item.id)}>
+        <TouchableOpacity onPress={() => deleteBookmark(item.id)}>
           <Ionicons name="trash-outline" size={24} color="#EF4B4B" style={styles.deleteIcon} />
         </TouchableOpacity>
     </View>
@@ -51,13 +64,13 @@ export default function BookmarkPage() {
   return (
     <View style={styles.container}>
       <View style={styles.fixedHeader}>
-      <Text style={styles.header}>Saved Recommendations</Text>
+      <Text style={styles.header}>Bookmarked Recommendations</Text>
       </View>
-      {recommendations.length === 0 ? (
-        <Text style={styles.emptyMessage}>You have no saved recommendations.</Text>
+      {bookmarks.length === 0 ? (
+        <Text style={styles.emptyMessage}>You have no bookmarks.</Text>
       ) : (
       <FlatList
-      data ={recommendations}
+      data ={bookmarks}
       keyExtractor={(item) => item.id}
       renderItem={renderItem}/>
       )}
