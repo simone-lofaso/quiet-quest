@@ -1,8 +1,12 @@
 # Quiet Quest
 
+## GitHub Repository SRC Link
+
+[Quiet Quest](https://github.com/simone-lofaso/quiet-quest.git)
+
 ## How to Set Up/Run Quiet Quest:
 
-1. Clone the git repository
+1. Clone the git repository (commands on how to clone a git repository are below under "Git Cloning Project")
 2. Installations needed to run the project
 
 ```jsx
@@ -60,6 +64,8 @@ npm start
   - If you save the recommendation you will be able to view the saved recommendation in the Bookmarks Page
   - If you want to delete the saved recommendation from your bookmarks, click on the trash-outline button
 - Go back to the home page and retake the quiz
+
+# More Commands
 
 ## Git Cloning Project:
 
