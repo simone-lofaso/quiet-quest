@@ -6,10 +6,18 @@
 
 ## How to Set Up/Run Quiet Quest:
 
-1. Clone the git repository (commands on how to clone a git repository are below under "Git Cloning Project")
-2. Installations needed to run the project
+1. Clone the git repository using the code in your terminal:
 
 ```jsx
+git clone https://github.com/simone-lofaso/quiet-quest.git
+```
+
+- Additional information on how to clone a GitHub project are provided in the "More Commands" section of the README
+
+2. Installations that are needed to run the project:
+
+```jsx
+npm install expo
 npm i
 npm i firebase
 npm i ionicons
