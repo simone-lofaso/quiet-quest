@@ -1,7 +1,7 @@
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
 import { getAnalytics } from "firebase/analytics";
-import { getAuth } from 'firebase/auth';
+import { getAuth } from "firebase/auth";
 import { getFirestore } from "firebase/firestore";
 import firebase from "firebase/app";
 // TODO: Add SDKs for Firebase products that you want to use
@@ -16,7 +16,7 @@ const firebaseConfig = {
   storageBucket: "quiet-quest-3debd.appspot.com",
   messagingSenderId: "591990068159",
   appId: "1:591990068159:web:8c26adc2e3fbaf2651870a",
-  measurementId: "G-0Z2WEWQ542"
+  measurementId: "G-0Z2WEWQ542",
 };
 
 // Initialize Firebase

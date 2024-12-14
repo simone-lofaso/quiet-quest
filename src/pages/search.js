@@ -15,7 +15,7 @@ import { SearchBar } from "react-native-screens";
 import { Ionicons } from "@expo/vector-icons";
 
 //const GEOAPIFY_API_KEY = [YOUR_API_KEY];
-const GEOAPIFY_API_KEY = "9ae4bc67fc5a46a59a0bc17736ef8433";
+const GEOAPIFY_API_KEY = process.env.EXPO_PUBLIC_GEOAPIFY_API_KEY;
 
 const SearchPage = () => {
   const [query, setQuery] = useState("");
@@ -35,6 +35,7 @@ const SearchPage = () => {
     try {
       console.log(query);
       //API takes in different categories from San Jose, CA and provides the different searches to the user
+      console.log(GEOAPIFY_API_KEY);
       const url = `https://api.geoapify.com/v2/places?categories=entertainment,commercial.supermarket,commercial.marketplace,commercial.shopping_mall,commercial.department_store,commercial.outdoor_and_sport,commercial.hobby,commercial.books,commercial.gift_and_souvenir,commercial.stationery,commercial.clothing,commercial.bag,commercial.garden,commercial.art,commercial.antiques,commercial.video_and_music,commercial.toy_and_game,catering.restaurant,catering.fast_food,catering.cafe,catering.food_court,catering.bar,catering.ice_cream,education.library,entertainment.culture,entertainment.cinema,entertainment.aquarium,entertainment.miniature_golf,entertainment.bowling_alley,entertainment.theme_park,sport.ice_rink,activity,tourism.information,tourism.attraction,tourism.sights,tourism,catering,entertainment.escape_game,entertainment.museum,entertainment,leisure.park,national_park&filter=rect:-121.9484641932776,37.38092259456819,-121.83271780672268,37.29138979589054&limit=20&name=${query}&apiKey=${GEOAPIFY_API_KEY}`;
 
       const response = await fetch(url);
@@ -43,6 +44,7 @@ const SearchPage = () => {
       if (data.features && data.features.length > 0) {
         setPlaces(data.features);
       } else {
+        console.log(EXPO_PUBLIC_GEOAPIFY_API_KEY);
         alert("No places were found based on your search.");
         setPlaces([]);
       }
